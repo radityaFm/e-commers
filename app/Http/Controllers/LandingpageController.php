@@ -10,11 +10,11 @@ class LandingPageController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            // Jika pengguna sudah login, arahkan ke halaman keranjang pesanan
-            return redirect()->route('order.index');
+            // Jika pengguna sudah login, arahkan ke halaman landing page
+            return view('landingpage');
         }
 
-        // Tampilkan landing page jika pengguna belum login
-        return view('landingpage');
+        // Jika pengguna belum login, arahkan ke halaman login
+        return redirect()->route('auth.login');
     }
 }

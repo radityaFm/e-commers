@@ -2,81 +2,97 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Tampilkan form login.
-     */
+    // Menampilkan form login
     public function showLoginForm()
     {
-        return view('auth.login'); // Pastikan view login.blade.php ada
+        return view('auth.login');
     }
 
-    /**
-     * Proses login.
-     */
+    // Menangani proses login
     public function login(Request $request)
     {
+        // Validasi input login
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string',
+            'password' => 'required|string|min:5', // Minimal 5 karakter untuk password
         ]);
 
-        // Proses login
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $request->session()->regenerate(); // Mencegah session fixation
-            return redirect()->route('dashboard')->with('success', 'Login berhasil!');
-        }
+        // Cek kredensial login
+        if (Auth::attempt($request->only('email', 'password'))) {
+            // Regenerasi session untuk menghindari session fixation
+            $request->session()->regenerate();
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+            // Redirect ke landing page setelah login berhasil
+            return redirect()->route('landingpage');
+        } else {
+            // Debugging: Cek data yang dikirimkan saat login gagal
+            return redirect()->route('landingpage');
+
+            // Jika login gagal, kembalikan dengan pesan error
+            return back()->withErrors([
+                'email' => 'Email atau password salah.',
+            ]);
+        }
     }
 
-    /**
-     * Tampilkan form registrasi.
-     */
+    // Menampilkan form registrasi
     public function showRegistrationForm()
     {
-        return view('auth.register'); // Pastikan view register.blade.php ada
+        return view('auth.register');
     }
 
-    /**
-     * Proses registrasi.
-     */
+    // Menangani proses registrasi
     public function register(Request $request)
     {
+        // Validasi input registrasi
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8|confirmed', // Password harus sama dengan konfirmasi
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:5|confirmed', // Minimal 5 karakter dan konfirmasi password
         ]);
 
-        // Simpan data registrasi
+        // Cek apakah password dan password konfirmasi cocok
+        if ($request->password !== $request->password_confirmation) {
+            return back()->withErrors([
+                'password' => 'Password tidak sama.',
+            ]);
+        }
+
+        // Cek apakah email sudah terdaftar
+        $existingUser = User::where('email', $request->email)->first();
+        if ($existingUser) {
+            return redirect()->route('auth.login')->with('info', 'Email sudah terdaftar. Silakan login.');
+        }
+
+        // Simpan data pengguna baru
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->password), // Enkripsi password
         ]);
 
+        // Redirect ke form login setelah registrasi sukses
         return redirect()->route('auth.login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
-    /**
-     * Logout user.
-     */
+    // Menangani logout
     public function logout(Request $request)
     {
+        // Proses logout
         Auth::logout();
 
+        // Hapus semua session dan buat token baru
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('auth.login')->with('success', 'Logout berhasil.');
+        // Redirect ke halaman login setelah logout
+        return redirect()->route('auth.login');
     }
 }
