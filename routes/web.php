@@ -11,7 +11,7 @@ Route::get('auth.login', [AuthController::class, 'showLoginForm'])->name('auth.l
 Route::post('auth.login', [AuthController::class, 'login'])->name('login.process');
 Route::get('auth.register', [AuthController::class, 'showRegistrationForm'])->name('auth.register');
 Route::post('auth.register', [AuthController::class, 'register'])->name('register.process');
-Route::post('auth.logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 

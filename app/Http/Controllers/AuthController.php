@@ -15,33 +15,27 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Menangani proses login
-    public function login(Request $request)
-    {
-        // Validasi input login
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:5', // Minimal 5 karakter untuk password
-        ]);
-
-        // Cek kredensial login
-        if (Auth::attempt($request->only('email', 'password'))) {
-            // Regenerasi session untuk menghindari session fixation
-            $request->session()->regenerate();
-
-            // Redirect ke landing page setelah login berhasil
-            return redirect()->route('landingpage');
-        } else {
-            // Debugging: Cek data yang dikirimkan saat login gagal
-            return redirect()->route('landingpage');
-
-            // Jika login gagal, kembalikan dengan pesan error
-            return back()->withErrors([
-                'email' => 'Email atau password salah.',
+        // Menangani proses login
+        public function login(Request $request)
+        {
+            // Validasi input login
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string|min:5',
             ]);
+        
+            // Cek kredensial login
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                // Regenerasi session untuk keamanan
+                $request->session()->regenerate();
+        
+                // Redirect ke landing page dengan notifikasi sukses
+                return redirect()->route('landingpage')->with('success', 'Login berhasil! Selamat datang.');
+            } else {
+                // Jika login gagal, kembali ke halaman login dengan error
+                return redirect()->route('auth.login')->with('error', 'Email atau password salah.')->withInput();
+            }
         }
-    }
-
     // Menampilkan form registrasi
     public function showRegistrationForm()
     {
@@ -84,15 +78,22 @@ class AuthController extends Controller
 
     // Menangani logout
     public function logout(Request $request)
-    {
-        // Proses logout
-        Auth::logout();
+{
+    // Ambil user yang sedang login
+    $user = Auth::user();
 
-        // Hapus semua session dan buat token baru
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    // Hapus akun pengguna dari database (sesuaikan dengan logika penghapusan)
+    $user->delete();
 
-        // Redirect ke halaman login setelah logout
-        return redirect()->route('auth.login');
-    }
+    // Proses logout
+    Auth::logout();
+
+    // Hapus semua session dan buat token baru
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    // Redirect ke halaman registrasi setelah logout
+    return redirect()->route('auth.register');
+}
+
 }

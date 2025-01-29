@@ -80,7 +80,67 @@
         transform: rotate(-45deg);
         top: 0;
     }
+    .dropdown-menu {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    animation: fadeIn 0.3s ease-in-out;
+    border: none;
+}
 
+/* CSS untuk dropdown */
+.dropdown-menu {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    animation: fadeIn 0.3s ease-in-out;
+    border: 1px solid #008C74; /* Garis di pinggir dropdown */
+    border-radius: 5px; /* Opsional: Membuat sudut sedikit melengkung */
+    background-color: white; /* Latar belakang dropdown */
+}
+
+/* Menampilkan dropdown saat hover pada dropdown */
+.hover-dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Segitiga pada dropdown */
+.dropdown-menu .dropdown-arrow {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    margin-left: -5px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid white;
+}
+
+/* Gaya item dropdown */
+.dropdown-item {
+    padding: 15px 25px;
+    font-size: 16px;
+    background-color: transparent !important;
+    color: #333; /* Warna teks default */
+}
+
+/* Efek hover pada item dropdown */
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #f1f1f1 !important; /* Latar belakang saat hover */
+    color: #008C74; /* Warna teks tetap terlihat saat hover */
+}
+
+/* Animasi fade-in */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
     @media( min-width: 765px ){
         .search-desktop {
         display: block;
@@ -151,31 +211,47 @@
     </style>
 </head>
 <body>
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <div class="container">
-        <!-- Nama UMKM -->
         <a class="navbar-brand" style="font-size:30px;">Mbak G</a>
-
-        <!-- Toggler untuk mode responsif -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <!-- Navigasi dan Login/Daftar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-3">
                 <li class="nav-item me-2"><a class="nav-link" href="#features">About us</a></li>
                 <li class="nav-item me-2"><a class="nav-link" href="#about">Produk</a></li>
                 <li class="nav-item me-4"><a class="nav-link" href="#contact">Testimoni</a></li>
             </ul>
-            <!-- Login/Daftar -->
             <div class="ms-1 mb-3">
-                <a href="{{ route('auth.login') }}" class="btn btn-outline-light btn-sm me-2">Login</a>
-                <a href="{{ route('auth.register') }}" class="btn btn-light btn-sm">Daftar</a>
+                @guest
+                    <a href="{{ route('auth.login') }}" class="btn btn-outline-light btn-sm me-2">Login</a>
+                    <a href="{{ route('auth.register') }}" class="btn btn-light btn-sm">Daftar</a>
+                @endguest
+                @auth
+                <div class="dropdown ms-2 hover-dropdown">
+                    <a class="d-flex align-items-center text-decoration-none text-light" id="userDropdown">
+                        <img src="{{ Auth::user()->profile_photo_url ?: 'https://via.placeholder.com/30' }}" 
+                            alt="User Photo" class="rounded-circle me-2" width="30" height="30">
+                        <span>{{ Auth::user()->name }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="{{ route('auth.login') }}">Pengaturan Akun</a></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                @endauth
             </div>
         </div>
     </div>
 </nav>
+
 
 <!-- Row untuk Search Bar -->
 <div class="row justify-content-end" style="background-color: black; padding: 20px 0;">
