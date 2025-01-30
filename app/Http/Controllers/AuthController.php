@@ -79,12 +79,6 @@ class AuthController extends Controller
     // Menangani logout
     public function logout(Request $request)
 {
-    // Ambil user yang sedang login
-    $user = Auth::user();
-
-    // Hapus akun pengguna dari database (sesuaikan dengan logika penghapusan)
-    $user->delete();
-
     // Proses logout
     Auth::logout();
 
@@ -92,8 +86,8 @@ class AuthController extends Controller
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    // Redirect ke halaman registrasi setelah logout
-    return redirect()->route('auth.register');
+    // Redirect ke halaman login setelah logout
+    return redirect()->route('auth.login');
 }
 
 }
