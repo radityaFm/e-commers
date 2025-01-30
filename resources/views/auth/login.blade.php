@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,36 +24,32 @@
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+                @endif
 
-            @if(session('error'))
+                @if(session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+                @endif
 
                 <form action="{{ route('auth.login') }}" method="POST">
                     @csrf
-                    <!-- Email Input -->
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
                     </div>
 
-                    <!-- Password Input with Show/Hide -->
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" name="password" id="password" class="form-control" required>
                     </div>
 
-                    <!-- Show Password Checkbox -->
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="showPassword">
                         <label class="form-check-label" for="showPassword">Show Password</label>
                     </div>
 
-                    <!-- Submit Button -->
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">Login</button>
                     </div>
@@ -67,11 +62,15 @@
         </div>
     </div>
 
+    <!-- Bootstrap JS untuk dismissable alert -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         document.getElementById('showPassword').addEventListener('change', function () {
             var passwordField = document.getElementById('password');
             passwordField.type = this.checked ? 'text' : 'password';
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

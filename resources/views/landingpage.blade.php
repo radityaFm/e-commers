@@ -237,7 +237,7 @@
                         <span>{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="{{ route('auth.login') }}">Pengaturan Akun</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') }}">Pengaturan Akun</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf

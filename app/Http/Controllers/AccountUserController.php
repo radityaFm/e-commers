@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Storage;
 
 class AccountUserController extends Controller
 {
-    // Tampilkan halaman profil
     public function index()
     {
         $user = Auth::user();
         return view('account.profile', compact('user'));
     }
+    
 
     // Update Username
     public function updateUsername(Request $request)
@@ -78,6 +78,6 @@ class AccountUserController extends Controller
         $user->forceDelete();
         Auth::logout();
 
-        return redirect('/')->with('success', 'Akun Anda telah dihapus secara permanen.');
+        return redirect('auth.register')->with('success', 'Akun Anda telah dihapus secara permanen.');
     }
 }
