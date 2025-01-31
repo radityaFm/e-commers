@@ -6,7 +6,7 @@
     <title>Landing Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-       html, body {
+        html, body {
             overflow-x: hidden;
             width: 100%;
         }
@@ -29,169 +29,241 @@
         .navbar-nav .nav-link {
             color: white !important;
         }
+
         .search-desktop,
         .search-mobile {
             display: none;
         }
+
         .navbar-toggler {
-        border: none;
-        outline: none;
-    }
-
-    .navbar-toggler-icon {
-        width: 30px;
-        height: 3px;
-        background-color: #fff;
-        border-radius: 5px;
-        position: relative;
-        transition: all 0.3s ease;
-    }
-
-    .navbar-toggler-icon::before,
-    .navbar-toggler-icon::after {
-        content: '';
-        position: absolute;
-        width: 30px;
-        height: 3px;
-        background-color: #fff;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-    }
-
-    .navbar-toggler-icon::before {
-        top: -8px;
-    }
-
-    .navbar-toggler-icon::after {
-        top: 8px;
-    }
-
-    /* Animasi ketika hamburger dibuka */
-    .navbar-toggler.active .navbar-toggler-icon {
-        background-color: transparent;
-    }
-
-    .navbar-toggler.active .navbar-toggler-icon::before {
-        transform: rotate(45deg);
-        top: 0;
-    }
-
-    .navbar-toggler.active .navbar-toggler-icon::after {
-        transform: rotate(-45deg);
-        top: 0;
-    }
-    .dropdown-menu {
-    display: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
-    animation: fadeIn 0.3s ease-in-out;
-    border: none;
-}
-
-/* CSS untuk dropdown */
-.dropdown-menu {
-    display: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
-    animation: fadeIn 0.3s ease-in-out;
-    border: 1px solid #008C74; /* Garis di pinggir dropdown */
-    border-radius: 5px; /* Opsional: Membuat sudut sedikit melengkung */
-    background-color: white; /* Latar belakang dropdown */
-}
-
-/* Menampilkan dropdown saat hover pada dropdown */
-.hover-dropdown:hover .dropdown-menu {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Segitiga pada dropdown */
-.dropdown-menu .dropdown-arrow {
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    margin-left: -5px;
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid white;
-}
-
-/* Gaya item dropdown */
-.dropdown-item {
-    padding: 15px 25px;
-    font-size: 16px;
-    background-color: transparent !important;
-    color: #333; /* Warna teks default */
-}
-
-/* Efek hover pada item dropdown */
-.dropdown-item:hover,
-.dropdown-item:focus {
-    background-color: #f1f1f1 !important; /* Latar belakang saat hover */
-    color: #008C74; /* Warna teks tetap terlihat saat hover */
-}
-
-/* Animasi fade-in */
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-    @media( min-width: 765px ){
-        .search-desktop {
-        display: block;
-    }
-    }
-    /* Media Query untuk layar 320px - 764px */
-    @media (max-width: 768px) {
-        .navbar-toggler {
-            display: inline-block; /* Tampilkan hamburger */
+            border: none;
+            outline: none;
+        }
+        span.account {
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
-        .collapse:not(.show) {
+        .navbar-toggler-icon {
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler-icon::before,
+        .navbar-toggler-icon::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler-icon::before {
+            top: -8px;
+        }
+
+        .navbar-toggler-icon::after {
+            top: 8px;
+        }
+
+        /* Animasi ketika hamburger dibuka */
+        .navbar-toggler.active .navbar-toggler-icon {
+            background-color: transparent;
+        }
+
+        .navbar-toggler.active .navbar-toggler-icon::before {
+            transform: rotate(45deg);
+            top: 0;
+        }
+
+        .navbar-toggler.active .navbar-toggler-icon::after {
+            transform: rotate(-45deg);
+            top: 0;
+        }
+
+        .dropdown-menu {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            animation: fadeIn 0.3s ease-in-out;
+            border: 1px solid #008C74; /* Garis di pinggir dropdown */
+            border-radius: 5px; /* Opsional: Membuat sudut sedikit melengkung */
+            background-color: white; /* Latar belakang dropdown */
+        }
+
+        /* Menampilkan dropdown saat hover pada dropdown */
+        .hover-dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Segitiga pada dropdown */
+        .dropdown-menu .dropdown-arrow {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            margin-left: -5px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid white;
+        }
+
+        /* Gaya item dropdown */
+        .dropdown-item {
+            padding: 15px 25px;
+            font-size: 16px;
+            background-color: transparent !important;
+            color: #333; /* Warna teks default */
+        }
+
+        /* Efek hover pada item dropdown */
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: #f1f1f1 !important; /* Latar belakang saat hover */
+            color: #008C74; /* Warna teks tetap terlihat saat hover */
+        }
+
+        /* Animasi fade-in */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+@media (min-width: 765px) {
+    .search-desktop {
+        display: block; /* Menampilkan kolom pencarian di layar besar */
+    }
+}
+
+/* Media Query untuk layar 320px - 764px (Mobile) */
+@media (max-width: 768px) {
+    .navbar-toggler {
+        display: inline-block; /* Tampilkan hamburger */
+    }
+
+    .collapse:not(.show) {
+        display: none; /* Menyembunyikan menu navigasi jika belum di-expand */
+    }
+
+    .navbar-nav {
+        flex-direction: column; /* Navigasi vertikal */
+        text-align: left; /* Posisi navigasi di kiri */
+    }
+    .search-desktop,
+        .search-mobile {
             display: none;
         }
 
-        .navbar-nav {
-            flex-direction: column; /* Navigasi vertikal */
-            text-align: left; /* Posisi navigasi di pojok kiri */
-        }
+    .navbar-nav .nav-item {
+        margin-bottom: 2px;
+        margin-top: 20px; /* Memberikan jarak antar item */
+    }
 
-        .navbar-nav .nav-item {
-            margin-bottom: 2px;
-            margin-top: 20px;
-        }
+    .search-container form {
+        justify-content: left; /* Kolom pencarian di pojok kiri */
+    }
 
-        .search-container form {
-            justify-content: left; /* Kolom pencarian di pojok kiri */
-        }
+    .search-container input {
+        width: 100%; /* Kolom pencarian memenuhi lebar layar */
+    }
 
-        .search-container input {
-            width: 100%; /* Perbesar kolom pencarian */
-        }
+    .auth-buttons {
+        text-align: left; /* Posisi daftar/login di kiri */
+        margin-top: 10px;
+    }
 
-        .auth-buttons {
-            text-align: left; /* Posisi daftar/login di pojok kiri */
-            margin-top: 10px;
+    .search-mobile {
+        display: block; /* Menampilkan kolom pencarian untuk mobile */
+    }
+
+    .keranjang {
+        position: relative; /* Pastikan elemen relatif terhadap kontainer terdekat */
+        margin-right: 20px; /* Menyesuaikan margin kanan agar tidak terlalu jauh */
+        top: -5px; /* Pindahkan sedikit ke atas agar sejajar */
+    }
+
+    #userDropdown {
+        flex-direction: column; /* Tampilkan secara vertikal */
+        text-align: left; /* Menyelaraskan teks ke kiri */
+        display: none !important;
+    }
+
+    #userDropdown .fs-5 {
+        font-size: 14px; /* Ukuran font kecil di layar kecil */
+        margin-right: 30px;
+    }
+
+    #userDropdown .account {
+        font-size: 16px; /* Ukuran font untuk nama pengguna */
+        text-align: left; /* Menyelaraskan teks nama pengguna ke kiri */
+        margin-left: 0; /* Menghapus margin kiri agar teks berada di pojok kiri */
+    }
+}
+
+/* Media Query untuk layar dengan lebar maksimal 320px */
+@media (max-width: 320px) {
+    .keranjang {
+        margin-right: 40px; /* Memberikan lebih banyak ruang di kanan untuk tampilan lebih rapi */
+    }
+
+    /* Penyesuaian ukuran font atau elemen lain untuk layar 320px */
+    #userDropdown {
+        flex-direction: column;
+        text-align: left;
+        display: none !important;
+    }
+    
+
+    #userDropdown .fs-5 {
+        font-size: 4px; /* Ukuran font kecil di layar kecil */
+        margin-right: 30px;
+    }
+
+    #userDropdown .account {
+        font-size: 16px; /* Ukuran font untuk nama pengguna */
+    }
+}
+
+/* Media Query untuk layar 768px - 1024px (Tablet) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    #userDropdown {
+        flex-direction: row; /* Menjaga elemen dalam dropdown tetap horizontal */
+        justify-content: space-between; /* Memberikan ruang antara elemen */
+    }
+
+    #userDropdown .fs-5 {
+        font-size: 16px; /* Ukuran font sedikit lebih besar di layar menengah */
+        margin-right: 30px;
+    }
+
+    #userDropdown .account {
+        font-size: 18px; /* Ukuran font untuk nama pengguna */
+    }
+    .search-desktop,
+        .search-mobile {
+            display: none;
         }
-            .search-mobile {
-                display: block;
-            }
-            .keranjang {
-                position: relative; /* Pastikan elemen relatif terhadap kontainer terdekat */
-                margin-right: 20px; /* Kurangi margin kanan untuk mendekatkan ke kiri */
-                top: -5px; /* Pindahkan sedikit ke atas */
-            }
-        }
-        @media(max-width:320px) { 
-            .keranjang{
-            margin-right:40px;
-        }
-        }
+}
+@media (min-width: 1440px) {
+    #dropdownakun{
+        display: none !important;
+    }
+}
+@media (max-width: 1024px) {
+    #dropdownakun{
+        display: none !important;
+    }
+}
+
         .hero {
             background: url('https://source.unsplash.com/1600x900/?business') no-repeat center center/cover;
             height: 100vh;
@@ -201,9 +273,11 @@
             justify-content: center;
             text-align: center;
         }
+
         .features {
             padding: 60px 20px;
         }
+
         .features .icon {
             font-size: 50px;
             color: #0d6efd;
@@ -220,61 +294,80 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-3">
-                <li class="nav-item me-2"><a class="nav-link" href="#features">About us</a></li>
-                <li class="nav-item me-2"><a class="nav-link" href="#about">Produk</a></li>
-                <li class="nav-item me-4"><a class="nav-link" href="#contact">Testimoni</a></li>
+                <li class="nav-item me-5 mx-5"><a class="nav-link fs-5" href="#features">About us</a></li>
+                <li class="nav-item me-5 mx-5"><a class="nav-link fs-5" href="#about">Produk</a></li>
+                <li class="nav-item me-5 mx-5"><a class="nav-link fs-5" href="#contact">Testimoni</a></li>
             </ul>
-            <div class="ms-1 mb-3">
-                @guest
-                    <a href="{{ route('auth.login') }}" class="btn btn-outline-light btn-sm me-2">Login</a>
-                    <a href="{{ route('auth.register') }}" class="btn btn-light btn-sm">Daftar</a>
-                @endguest
-                @auth
-                <div class="dropdown ms-2 hover-dropdown">
-                    <a class="d-flex align-items-center text-decoration-none text-light" id="userDropdown">
-                        <img src="{{ Auth::user()->profile_photo_url ?: 'https://via.placeholder.com/30' }}" 
-                            alt="User Photo" class="rounded-circle me-2" width="30" height="30">
-                        <span>{{ Auth::user()->name }}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="{{ route('account.profile') }}">Pengaturan Akun</a></li>
-                        <li>
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="dropdown-item text-danger">Logout</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                @endauth
-            </div>
+</div>
         </div>
     </div>
 </nav>
-
-
 <!-- Row untuk Search Bar -->
-<div class="row justify-content-end" style="background-color: black; padding: 20px 0;">
-    <div class="col-4"></div>
-    <div class="col-3"></div>
+<div class="row justify-content-center" style="background-color: black; padding: 20px 0;">
+    <div class="col-1"></div>
     <div class="col-3">
-    <div class="search-desktop search-container">
-    <form class="d-flex justify-content-end" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search in Navbar" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-    </div>
-    </div>
-    <div class="col-2">
-        <!-- Tambahkan elemen <a> untuk href ke keranjang -->
-        <a href="{{ route('order.index') }}" class="keranjang text-decoration-none text-light">
-            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-cart cart-icon me-3" viewBox="0 0 16 16">
+    <!-- Keranjang -->
+    <a href="{{ route('order.index') }}" class="keranjang text-decoration-none text-light">
+            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-cart cart-icon" viewBox="0 0 16 16">
                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
             </svg>
         </a>
     </div>
+    <!-- Search Bar -->
+    <div class="col-2"></div>
+    <div class="col-3">
+        <div class="search-desktop search-container">
+            <form class="d-flex justify-content-end" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search in Navbar" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-2 d-flex align-items-center justify-content-center ps-3">
+        <!-- Akun -->
+        @auth
+        <div class="dropdownakun hover-dropdown ms-3">
+            <a class="user text-decoration-none text-light" id="dropdownakun" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M13.5 8a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6m0 1a6.978 6.978 0 0 0-4.546 1.633A5.985 5.985 0 0 0 8 14a5.985 5.985 0 0 0 4.546-2.367A6.978 6.978 0 0 0 8 10"/>
+                </svg>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                <li><a class="dropdown-item" href="{{ route('account.profile') }}">Pengaturan Akun</a></li>
+                <li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="dropdown-item text-danger">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        @endauth
+        @guest
+        <a href="{{ route('auth.login') }}" class="btn btn-outline-light btn-sm me-2">Login</a>
+        <a href="{{ route('auth.register') }}" class="btn btn-light btn-sm">Daftar</a>
+    @endguest
+    @auth
+        <div class="dropdown ms-3 hover-dropdown">
+            <a class="d-flex align-items-center text-decoration-none text-light" id="userDropdown">
+                <p class="fs-5 mb-0 me-2">Welcome</p>
+                <span class="account">{{ Auth::user()->name }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="{{ route('account.profile') }}">Pengaturan Akun</a></li>
+                <li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="dropdown-item text-danger">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    @endauth
+    </div>
+    <div class="col-1"></div>
 </div>
-
     <!-- Hero Section -->
     <div class="hero bg-gray">
         <div class="container">
