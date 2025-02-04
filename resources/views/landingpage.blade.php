@@ -6,138 +6,167 @@
     <title>Landing Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-        }
-        .cart-icon {
-            color: white; /* Warna teks putih */
-        }
-        .navbar {
-            background-color: black !important; /* Warna hitam penuh */
-            width: 100%; /* Mencakup seluruh lebar */
-        }
-        .navbar-nav {
-            flex-direction: row;
-            gap: 15px;
-        }
+       html, body {
+        overflow-x: hidden;
+        width: 100%;
+        background-color: #D9D9D9;
+    }
+    .cart-icon {
+        color: white; /* Warna teks putih */
+    }
+    .navbar {
+        background-color: black !important; /* Warna hitam penuh */
+        width: 100%; /* Mencakup seluruh lebar */
+    }
+    .navbar-nav {
+        flex-direction: row;
+        gap: 15px;
+    }
 
-        .navbar-nav .nav-item {
-            margin: 0;
-        }
+    .navbar-nav .nav-item {
+        margin: 0;
+    }
 
-        .navbar-nav .nav-link {
-            color: white !important;
-        }
+    .navbar-nav .nav-link {
+        color: white !important;
+    }
 
-        .search-desktop,
-        .search-mobile {
-            display: none;
-        }
+    .search-desktop,
+    .search-mobile {
+        display: none;
+    }
 
-        .navbar-toggler {
-            border: none;
-            outline: none;
-        }
-        span.account {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
+    .navbar-toggler {
+        border: none;
+        outline: none;
+    }
+    span.account {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
 
-        .navbar-toggler-icon {
-            width: 30px;
-            height: 3px;
-            background-color: #fff;
-            border-radius: 5px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
+    .navbar-toggler-icon {
+        width: 30px;
+        height: 3px;
+        background-color: #fff;
+        border-radius: 5px;
+        position: relative;
+        transition: all 0.3s ease;
+    }
 
-        .navbar-toggler-icon::before,
-        .navbar-toggler-icon::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 3px;
-            background-color: #fff;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
+    .navbar-toggler-icon::before,
+    .navbar-toggler-icon::after {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 3px;
+        background-color: #fff;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
 
-        .navbar-toggler-icon::before {
-            top: -8px;
-        }
+    .navbar-toggler-icon::before {
+        top: -8px;
+    }
 
-        .navbar-toggler-icon::after {
-            top: 8px;
-        }
+    .navbar-toggler-icon::after {
+        top: 8px;
+    }
 
-        /* Animasi ketika hamburger dibuka */
-        .navbar-toggler.active .navbar-toggler-icon {
-            background-color: transparent;
-        }
+    /* Animasi ketika hamburger dibuka */
+    .navbar-toggler.active .navbar-toggler-icon {
+        background-color: transparent;
+    }
 
-        .navbar-toggler.active .navbar-toggler-icon::before {
-            transform: rotate(45deg);
-            top: 0;
-        }
+    .navbar-toggler.active .navbar-toggler-icon::before {
+        transform: rotate(45deg);
+        top: 0;
+    }
 
-        .navbar-toggler.active .navbar-toggler-icon::after {
-            transform: rotate(-45deg);
-            top: 0;
-        }
+    .navbar-toggler.active .navbar-toggler-icon::after {
+        transform: rotate(-45deg);
+        top: 0;
+    }
 
-        .dropdown-menu {
-            display: none;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            animation: fadeIn 0.3s ease-in-out;
-            border: 1px solid #008C74; /* Garis di pinggir dropdown */
-            border-radius: 5px; /* Opsional: Membuat sudut sedikit melengkung */
-            background-color: white; /* Latar belakang dropdown */
-        }
+    .dropdown-menu {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+        animation: fadeIn 0.3s ease-in-out;
+        border: 1px solid #008C74;
+        border-radius: 5px;
+        background-color: white;
+    }
 
-        /* Menampilkan dropdown saat hover pada dropdown */
-        .hover-dropdown:hover .dropdown-menu {
-            display: block;
-            opacity: 1;
-            visibility: visible;
-        }
+    /* Menampilkan dropdown saat hover pada dropdown */
+    .hover-dropdown:hover .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+    }
 
-        /* Segitiga pada dropdown */
-        .dropdown-menu .dropdown-arrow {
-            position: absolute;
-            top: -5px;
-            left: 50%;
-            margin-left: -5px;
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-bottom: 5px solid white;
-        }
+    /* Segitiga pada dropdown */
+    .dropdown-menu .dropdown-arrow {
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        margin-left: -5px;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 5px solid white;
+    }
 
-        /* Gaya item dropdown */
-        .dropdown-item {
-            padding: 15px 25px;
-            font-size: 16px;
-            background-color: transparent !important;
-            color: #333; /* Warna teks default */
-        }
+    /* Gaya item dropdown */
+    .dropdown-item {
+        padding: 15px 25px;
+        font-size: 16px;
+        background-color: transparent !important;
+        color: #333;
+    }
 
-        /* Efek hover pada item dropdown */
-        .dropdown-item:hover,
-        .dropdown-item:focus {
-            background-color: #f1f1f1 !important; /* Latar belakang saat hover */
-            color: #008C74; /* Warna teks tetap terlihat saat hover */
-        }
+    /* Efek hover pada item dropdown */
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: #f1f1f1 !important;
+        color: #008C74;
+    }
 
-        /* Animasi fade-in */
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
+    /* Animasi fade-in */
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    /* Styling untuk navbar row - lebih terang saat hover */
+    .navbar-nav .nav-item:hover {
+        background-color: rgba(0, 0, 0, 0.6); /* Lebih terang saat hover */
+    }
+
+    /* Styling foto dan tulisan agar ke tengah bawah dan lebih besar */
+    .hero {
+        background: url('https://source.unsplash.com/1600x900/?business') no-repeat center center/cover;
+        height: 100vh;
+        color: white;
+        display: flex;
+        align-items: flex-end; /* Menempatkan teks di bawah */
+        justify-content: center;
+        text-align: center;
+        padding-bottom: 50px; /* Memberikan sedikit jarak pada bagian bawah */
+    }
+
+    .hero h1 {
+        font-size: 3rem; /* Membuat teks lebih besar */
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        margin-top: 20px;
+    }
 @media (min-width: 765px) {
     .search-desktop {
         display: block; /* Menampilkan kolom pencarian di layar besar */
@@ -194,7 +223,7 @@
     #userDropdown {
         flex-direction: column; /* Tampilkan secara vertikal */
         text-align: left; /* Menyelaraskan teks ke kiri */
-        display: none !important;
+        display: none;
     }
 
     #userDropdown .fs-5 {
@@ -219,7 +248,7 @@
     #userDropdown {
         flex-direction: column;
         text-align: left;
-        display: none !important;
+        display: none;
     }
     
 
@@ -252,6 +281,9 @@
         .search-mobile {
             display: none;
         }
+        .hero h1 {
+            font-size: 2.5rem;
+        }
 }
 @media (min-width: 1440px) {
     #dropdownakun{
@@ -263,16 +295,6 @@
         display: none !important;
     }
 }
-
-        .hero {
-            background: url('https://source.unsplash.com/1600x900/?business') no-repeat center center/cover;
-            height: 100vh;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
 
         .features {
             padding: 60px 20px;
@@ -294,9 +316,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-3">
-                <li class="nav-item me-5 mx-5"><a class="nav-link fs-5" href="#features">About us</a></li>
-                <li class="nav-item me-5 mx-5"><a class="nav-link fs-5" href="#about">Produk</a></li>
-                <li class="nav-item me-5 mx-5"><a class="nav-link fs-5" href="#contact">Testimoni</a></li>
+                <li class="nav-item me-5 mx-5 ps-0"><a class="nav-link fs-5" href="#features">About us</a></li>
+                <li class="nav-item me-5 mx-5 ps-0"><a class="nav-link fs-5" href="#about">Produk</a></li>
+                <li class="nav-item me-5 mx-5 ps-0"><a class="nav-link fs-5" href="#contact">Testimoni</a></li>
             </ul>
 </div>
         </div>
@@ -305,7 +327,7 @@
 <!-- Row untuk Search Bar -->
 <div class="row justify-content-center" style="background-color: black; padding: 20px 0;">
     <div class="col-1"></div>
-    <div class="col-3">
+    <div class="col-1">
     <!-- Keranjang -->
     <a href="{{ route('order.index') }}" class="keranjang text-decoration-none text-light">
             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-cart cart-icon" viewBox="0 0 16 16">
@@ -315,15 +337,9 @@
     </div>
     <!-- Search Bar -->
     <div class="col-2"></div>
-    <div class="col-3">
-        <div class="search-desktop search-container">
-            <form class="d-flex justify-content-end" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search in Navbar" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+    <div class="col-4">
     </div>
-    <div class="col-2 d-flex align-items-center justify-content-center ps-3">
+    <div class="col-3 d-flex align-items-center justify-content-center ps-3">
         <!-- Akun -->
         @auth
         <div class="dropdownakun hover-dropdown ms-3">
@@ -366,81 +382,61 @@
         </div>
     @endauth
     </div>
-    <div class="col-1"></div>
 </div>
-    <!-- Hero Section -->
-    <div class="hero bg-gray">
-        <div class="container">
-            <h1 class="display-4" style="color:black;">Selamat Datang di Mbak G</h1>
-            <p class="lead">Temukan solusi UMKM terbaik untuk bisnis Anda.</p>
-            <a href="#features" class="btn btn-primary btn-lg">Jelajahi Fitur</a>
+<div class=" py-2" style="background-color:black"></div>
+<div class="py-4 bg-light"></div>
+<div class="bg-light py-5"> <!-- Tambahkan py-5 untuk menggantikan mt-5 dan mb-5 -->
+    <section id="about" class="container-fluid text-center bg-light">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-1"></div>
+            <div class="col-2">
+                <img src="{{ asset('img/logo.png') }}" alt="About Us" class="img-fluid">
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5">
+                <p class="fs-4" style="color:black;">
+                    Umkm mbak G menjual jajanan sehat dan pastinya tanpa mengandung pengawet
+                </p>
+            </div>
+            <div class="col-1"></div>
         </div>
-    </div>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-    <div class="search-mobile search-container">
-    <form class="d-flex justify-content-center" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search in Categories" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-    </div>
-        <div class="container">
-            <h2 class="text-center mb-4">Fitur Kami</h2>
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <div class="icon mb-3">📈</div>
-                    <h5>Analisis Bisnis</h5>
-                    <p>Pelajari perkembangan bisnis Anda secara mendalam.</p>
-                </div>
-                <div class="col-md-4">
-                    <div class="icon mb-3">🛒</div>
-                    <h5>E-commerce</h5>
-                    <p>Bangun toko online Anda dengan mudah.</p>
-                </div>
-                <div class="col-md-4">
-                    <div class="icon mb-3">📊</div>
-                    <h5>Laporan Keuangan</h5>
-                    <p>Kelola keuangan UMKM Anda dengan transparan.</p>
+    </section>
+</div>
+<div class="py-4 bg-light"></div>
+<!-- Produk -->
+ <div class="mt-4" style="background-color:#D9D9D9"></div>
+<section id="products" class="container text-center py-5 mb-5">
+    <div class="row mt-5 my-5 bg-white py-5 px-3 rounded">
+        <h2 class="mb-4">Produk Kami</h2>
+        <div class="col-md-2"></div>
+        
+        <!-- Susu Jeli -->
+        <div class="col-md-4">
+            <div class="card p-4">
+                <i class="fas fa-glass-whiskey fa-3x mb-3 text-primary"></i>
+                <h5 class="card-title my-5 mb-3 mt-3">Susu Jeli</h5>
+                <p class="card-text my-5 mb-3 mt-3">Jajanan susu dengan jeli, terbuat tanpa pewarna dan pengawet</p>
+                <div class="d-flex justify-content-center">
+                    <a href="{{ route('user.product') }}" class="btn btn-success btn-md my-3" style="width: 50%;">Pesan</a>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-4">Tentang Kami</h2>
-            <p class="text-center">Mbak G adalah platform yang dirancang untuk membantu UMKM di Indonesia berkembang melalui teknologi. Dengan fitur canggih dan layanan terpercaya, kami ingin menjadi mitra terbaik untuk perjalanan bisnis Anda.</p>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-4">Kontak Kami</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <form action="#" method="post">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="name" placeholder="Masukkan nama Anda">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Masukkan email Anda">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Pesan</label>
-                            <textarea class="form-control" id="message" rows="4" placeholder="Tulis pesan Anda"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Kirim</button>
-                    </form>
+        <!-- Yogurt -->
+        <div class="col-md-4">
+            <div class="card p-4">
+                <i class="fas fa-utensils fa-3x mb-3 text-danger"></i>
+                <h5 class="card-title my-5 mb-3 mt-3">Yogurt</h5>
+                <p class="card-text my-5 mb-3 mt-3">Jajanan yogurt, terbuat tanpa pewarna dan pengawet</p>
+                <div class="d-flex justify-content-center">
+                    <a href="{{ route('user.product') }}" class="btn btn-success btn-md my-3" style="width: 50%;">Pesan</a>
                 </div>
             </div>
         </div>
-    </section>
 
+        <div class="col-md-2"></div>
+    </div>
+</section>
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2025 Mbak G. Semua Hak Dilindungi.</p>

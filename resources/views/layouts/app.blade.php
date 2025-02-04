@@ -275,7 +275,7 @@
                     <li class="nav-item me-2"><a class="nav-link fs-5" >Mbak G</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-3">
-                    <li class="nav-item me-4"><a class="nav-link fs-5" href="{{'landingpage'}}">Go to Landingpage</a></li>
+                    <li class="nav-item me-4"><a class="nav-link fs-5" href="{{'/'}}">Go to Landingpage</a></li>
                 </ul>
                 <!-- Guest section -->
                 <div class="ms-1 mb-3 d-flex align-items-center">

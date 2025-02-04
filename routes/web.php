@@ -5,13 +5,16 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductController;
 
-Route::get('landingpage', [LandingPageController::class, 'index'])->name('landingpage'); // Halaman Landing
+Route::get('/', [LandingPageController::class, 'index'])->name('landingpage'); 
 
-Route::get('auth.login', [AuthController::class, 'showLoginForm'])->name('auth.login');
-Route::post('auth.login', [AuthController::class, 'login'])->name('login.process');
-Route::get('auth.register', [AuthController::class, 'showRegistrationForm'])->name('auth.register');
-Route::post('auth.register', [AuthController::class, 'register'])->name('register.process');
+Route::middleware('guest')->group(function(){
+    Route::get('auth.login', [AuthController::class, 'showLoginForm'])->name('auth.login');
+    Route::post('auth.login', [AuthController::class, 'login'])->name('login.process');
+    Route::get('auth.register', [AuthController::class, 'showRegistrationForm'])->name('auth.register');
+    Route::post('auth.register', [AuthController::class, 'register'])->name('register.process'); 
+});
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
@@ -28,3 +31,6 @@ Route::middleware('auth')->group(function () {
     // Route to delete account
     Route::delete('/profil/delete', [ProfileController::class, 'deleteAccount'])->name('profil.delete');
 });
+
+Route::get('user.product', [ProductController::class, 'show'])->name('user.product');
+Route::get('purchase/{id}/{quantity}', [ProductController::class, 'purchase'])->name('user.purchase');
