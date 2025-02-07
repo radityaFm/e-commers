@@ -19,15 +19,13 @@ use Filament\Forms\Components\Boolean;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 
-// setelah mengisi filament/UserResource dan Models/UserResource jangan lupa untuk migrate ke database
-
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     public static function getRecordRouteKeyName(): string
     {
-        return 'id'; // Ganti dengan field unik di database yang Anda gunakan
+        return 'slug'; // Ganti dengan field unik yang Anda gunakan
     }
 
     protected static ?string $navigationLabel = 'User';

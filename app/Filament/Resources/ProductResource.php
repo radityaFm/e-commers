@@ -138,9 +138,8 @@ class ProductResource extends Resource
                 SelectFilter::make('category')
                     ->label('Category')
                     ->options([
-                        1 => 'Tas',
-                        2 => 'kerudung',
-                        3 => 'gamis',
+                        1 => 'Susu jeli',
+                        2 => 'Yogurt',
                     ]),
                 SelectFilter::make('brands_id')
                     ->label('Brand')
@@ -166,9 +165,10 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
+            'index' => Pages\ListProduct::route('/'),
             'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 }
+    

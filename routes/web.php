@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItem;
+use App\Http\Controllers\addToCart;
+use App\Http\Controllers\ProductTransactionController;
 
 Route::get('/', [LandingPageController::class, 'index'])->name('landingpage'); 
 
@@ -16,8 +19,6 @@ Route::middleware('guest')->group(function(){
     Route::post('auth.register', [AuthController::class, 'register'])->name('register.process'); 
 });
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 
    
 Route::middleware('auth')->group(function () {
@@ -33,4 +34,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('user.product', [ProductController::class, 'show'])->name('user.product');
+Route::post('user.product/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('purchase/{id}/{quantity}', [ProductController::class, 'purchase'])->name('user.purchase');
+
+
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('cart', [CartController::class, 'showCart'])->name('cart');
+    Route::post('cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart', [CartController::class, 'checkout'])->name('cart.checkout');
+
+

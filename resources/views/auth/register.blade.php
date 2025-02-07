@@ -7,8 +7,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-        <div class="card shadow" style="width: 400px;">
+<div class="container d-flex justify-content-center align-items-center gap-3" style="min-height: 100vh;">
+    <!-- Gambar (Hilang di layar kecil) -->
+    <div class="col-md-6 d-none d-md-block">
+        <img src="{{ asset('img/auth.png') }}" class="img-fluid" alt="Register Image" style="width: 800%; height: 500px; object-fit: cover;">
+    </div>
+
+    <!-- Form Register -->
+    <div class="col-md-4">
+        <div class="card shadow" style="width: auto;">
             <div class="card-body">
                 <h4 class="card-title text-center mb-4">Register</h4>
 
@@ -84,7 +91,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <script>
         // Show/Hide Password
         document.getElementById('showPassword').addEventListener('change', function () {

@@ -11,28 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('thumbnail');
             $table->string('slug');
-            $table->text('about');
-            $table->unsignedBigInteger('stock');
-            $table->string('category');
-            $table->unsignedBigInteger('price');
-            $table->boolean('is_popular');
-            $table->foreignId('brands_id')->nullable()->constrained()->cascadeOnDelate();
+            $table->string('logo');
             $table->softDeletes(); 
             $table->timestamps();
         });
     }
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('brands');
     }
 };

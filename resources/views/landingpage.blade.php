@@ -9,7 +9,7 @@
        html, body {
         overflow-x: hidden;
         width: 100%;
-        background-color: #D9D9D9;
+        background-color: #ffff;
     }
     .cart-icon {
         color: white; /* Warna teks putih */
@@ -329,7 +329,7 @@
     <div class="col-1"></div>
     <div class="col-1">
     <!-- Keranjang -->
-    <a href="{{ route('order.index') }}" class="keranjang text-decoration-none text-light">
+    <a href="{{ route('cart') }}" class="keranjang text-decoration-none text-light">
             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-cart cart-icon" viewBox="0 0 16 16">
                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
             </svg>
@@ -384,7 +384,7 @@
     </div>
 </div>
 <div class=" py-2" style="background-color:black"></div>
-<div class="py-4 bg-light"></div>
+<div class="py-5 bg-light"></div>
 <div class="bg-light py-5"> <!-- Tambahkan py-5 untuk menggantikan mt-5 dan mb-5 -->
     <section id="about" class="container-fluid text-center bg-light">
         <div class="row d-flex justify-content-center align-items-center">
@@ -402,7 +402,7 @@
         </div>
     </section>
 </div>
-<div class="py-4 bg-light"></div>
+<div class="py-5 bg-light"></div>
 <!-- Produk -->
  <div class="mt-4" style="background-color:#D9D9D9"></div>
 <section id="products" class="container text-center py-5 mb-5">

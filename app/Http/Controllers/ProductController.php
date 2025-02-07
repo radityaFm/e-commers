@@ -7,25 +7,13 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // Menampilkan produk dengan pencarian dan filter harga
-    public function show(Request $request)
-    {
-        // Ambil input pencarian nama produk
-        $search = $request->input('search');
-    
-        // Query produk
-        $query = Product::query();
-    
-        // Filter berdasarkan nama produk saja
-        if (!empty($search)) {
-            $query->where('name', 'like', "%$search%");
+        public function show()
+        {
+            $products = Product::all(); // Ambil semua produk
+        
+            return view('user.product', ['products' => $products]);
         }
-    
-        // Ambil hasil query
-        $products = $query->get();
-    
-        return view('user.product', compact('products'));
-    }
+        
 
     // Menangani pembelian produk
     public function purchase($id, $quantity)

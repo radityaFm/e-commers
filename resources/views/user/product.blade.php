@@ -1,54 +1,31 @@
+<!-- resources/views/user/product.blade.php -->
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-5">
-        <h2 class="text-center">Our Products</h2>
+<div class="container">
+    <div class="row">
+        @foreach($products as $product)
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $product->name }}</h5>
+                    <p class="card-text">Rp{{ number_format($product->price, 0, ',', '.') }}</p>
+                    <p class="card-text">Stok: {{ $product->stock }}</p>
 
-        <!-- Form Pencarian Produk -->
-        <form method="GET" action="{{ route('user.product') }}">
-            <div class="row mb-3">
-                <div class="col-md-6 offset-md-3">
-                    <input type="text" name="search" class="form-control" placeholder="Cari produk berdasarkan nama..." value="{{ request()->get('search') }}">
-                </div>
-                <div class="col-md-2 text-center">
-                    <button type="submit" class="btn btn-primary">Cari</button>
+                    <!-- Form untuk menambahkan produk ke keranjang -->
+                    <form action="{{ route('cart.add') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <label for="quantity">Jumlah</label>
+                        <input type="number" name="quantity" min="1" max="{{ $product->stock }}" value="1" class="form-control mb-2" required>
+                        <button type="submit" class="btn btn-primary btn-block">Tambah ke Keranjang</button>
+                        <a href="{{ route('cart') }}" class="btn btn-success">Kembali ke Keranjang</a>
+                    </form>
                 </div>
             </div>
-        </form>
-
-        <!-- Daftar Produk -->
-        <div class="row mt-4">
-            @forelse ($products as $product)
-                <div class="col-md-4 mb-4">
-                    <div class="card p-3 border shadow-sm">
-                        <h4 class="card-title">{{ $product->name }}</h4>
-                        <p class="card-text">Harga: <strong>Rp {{ number_format($product->price, 0, ',', '.') }}</strong></p>
-                        <p class="card-text">Stock: 
-                            @if ($product->stock > 0)
-                                <span class="text-success">Tersedia</span>
-                            @else
-                                <span class="text-danger">Habis</span>
-                            @endif
-                        </p>
-                        @if ($product->stock > 0)
-                            <a href="{{ route('user.purchase', ['id' => $product->id, 'quantity' => 1]) }}" class="btn btn-success w-100">Beli Sekarang</a>
-                        @else
-                            <span class="badge bg-danger w-100 py-2">Stok Habis</span>
-                        @endif
-                    </div>
-                </div>
-            @empty
-                <!-- Menampilkan pesan jika tidak ada produk ditemukan berdasarkan pencarian -->
-                @if (request()->get('search'))
-                    <div class="col-12 text-center">
-                        <p class="text-muted">❌ Produk dengan nama "<strong>{{ request()->get('search') }}</strong>" tidak ditemukan.</p>
-                    </div>
-                @else
-                    <div class="col-12 text-center">
-                        <p class="text-muted">❌ Tidak ada produk untuk ditampilkan.</p>
-                    </div>
-                @endif
-            @endforelse
         </div>
+        @endforeach
     </div>
+</div>
 @endsection

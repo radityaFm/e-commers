@@ -56,7 +56,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,  // Middleware untuk autentikasi pengguna
+        'auth' => \App\Http\Middleware\Authenticate::class,
         'admin' => \App\Http\Middleware\CheckAdmin::class,  // Middleware custom untuk memeriksa role admin
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,  // Untuk memastikan email diverifikasi
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class, // Redirect pengguna yang sudah login
