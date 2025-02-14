@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\support\Str;
+use Illuminate\Support\Facades\Log;
 
 class Product extends Model
 {
     use hasFactory, softDeletes;
 
     protected $fillable = [
-        'name', 'thumbnail', 'slug', 'about','price', 'stock', 
+        'name', 'thumbnail', 'slug', 'about','price', 'stock','products', 
         'category', 'price','user_id', 'is_popular', 'brands_id'
     ];
     public function cartItems()
@@ -40,10 +41,8 @@ class Product extends Model
             $brand->slug = Str::slug($brand->name);
         });
 
-        static::updating(function ($brand) {
-            if ($brand->isDirty('name')) {
-                $brand->slug = Str::slug($brand->name);
-            }
+        static::updating(function ($product) {
+            // Log::info("Update produk: " . $product->name);
         });
     }
     public function checkout($id)

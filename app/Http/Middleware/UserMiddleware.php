@@ -13,12 +13,18 @@ class UserMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-    {
-        if (!auth()->check() || (!auth()->user()->hasRole('user') && !auth()->user()->hasRole('user'))) {
-            return redirect('/'); // Redirect ke halaman lain jika tidak memiliki role user
-        }
-        
-        return $next($request);
-    }
+    
+     public function handle(Request $request, Closure $next)
+     {
+         if (!Auth::check()) {
+             return redirect()->route('auth.login'); // Redirect ke login jika belum login
+         }
+     
+         // Contoh: Hanya user dengan role 'user' yang bisa lanjut
+         if (Auth::user()->role !== 'user') {
+             return redirect()->route('landingpage'); // Redirect ke landing page jika role tidak sesuai
+         }
+     
+         return $next($request);
+     }
 }

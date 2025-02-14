@@ -31,17 +31,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/profil/update/photo', [ProfileController::class, 'updatePhoto'])->name('profil.update.photo');
     // Route to delete account
     Route::delete('/profil/delete', [ProfileController::class, 'deleteAccount'])->name('profil.delete');
+    
+    Route::get('user.product', [ProductController::class, 'show'])->name('user.product');
+    Route::post('/user/product/add-to-cart', [CartController::class, 'addToCart'])->name('user.cart.add');
+    Route::get('purchase/{id}/{quantity}', [ProductController::class, 'purchase'])->name('user.purchase');
 });
-
-Route::get('user.product', [ProductController::class, 'show'])->name('user.product');
-Route::post('user.product/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
-Route::get('purchase/{id}/{quantity}', [ProductController::class, 'purchase'])->name('user.purchase');
 
 
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-Route::get('cart', [CartController::class, 'showCart'])->name('cart');
-    Route::post('cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
-    Route::post('/cart', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::get('cart', [CartController::class, 'viewCart'])->name('cart');
+Route::post('/cart/remove/{id}', [CartController::class, 'removeCart'])->name('cart.removeCart');
+Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.updateCart');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 

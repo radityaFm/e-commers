@@ -4,38 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class ProductController extends Controller
 {
-        public function show()
-        {
-            $products = Product::all(); // Ambil semua produk
-        
-            return view('user.product', ['products' => $products]);
-        }
-        
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['show']);
+    }
 
-    // Menangani pembelian produk
-    public function purchase($id, $quantity)
+    public function show()
+    {
+        $products = Product::all();
+        return view('user.product', compact('products'));
+    }
+
+    public function purchase(Request $request, $id)
     {
         try {
-            // Ambil produk berdasarkan ID
+            $request->validate([
+                'quantity' => 'required|integer|min:1',
+            ]);
+    
             $product = Product::findOrFail($id);
-
-            // Cek apakah stok cukup
+            $quantity = (int) $request->input('quantity');
+    
             if ($product->stock >= $quantity) {
-                // Kurangi stok
-                $product->decreaseStock($quantity);
-
-                // Lakukan pembelian, misalnya menyimpan transaksi ke database (tambahkan kode sesuai kebutuhan)
-
-                return redirect()->route('user.product')->with('success', 'Product purchased successfully!');
+                // Kurangi stok produk
+                $product->decrement('stock', $quantity);
+    
+                return redirect()->route('user.product')->with('success', 'Produk berhasil dibeli!');
             } else {
-                return redirect()->route('user.product')->with('error', 'Not enough stock available.');
+                return redirect()->route('user.product')->with('error', 'Stok tidak cukup.');
             }
         } catch (\Exception $e) {
-            // Tangani error jika produk tidak ditemukan atau terjadi kesalahan
-            return redirect()->route('user.product')->with('error', $e->getMessage());
+            return redirect()->route('user.product')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-    }
+    }    
 }

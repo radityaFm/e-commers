@@ -60,7 +60,9 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\CheckAdmin::class,  // Middleware custom untuk memeriksa role admin
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,  // Untuk memastikan email diverifikasi
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class, // Redirect pengguna yang sudah login
+        'user' => \App\Http\Middleware\UserMiddleware::class, 
         'role' => \App\Http\Middleware\CheckRole::class,
+        
     ];
 
     /**
