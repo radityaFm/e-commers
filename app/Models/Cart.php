@@ -6,26 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    protected $fillable = ['user_id'];
+    protected $fillable = ['user_id', 'status'];
 
-    // Relasi ke CartItem
-    public function items()
+    public function cartItems()
     {
         return $this->hasMany(CartItem::class);
-    }
-
-    // Relasi ke Product melalui CartItem
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id');    }
-    // Method untuk menghitung total harga
-    public function getTotal()
-    {
-        return $this->items->sum(fn($item) => $item->product->price * $item->quantity);
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'cart_product')->withPivot('quantity');
+    }    
+    // Method untuk menghitung total harga
+    public function getTotal()
+    {
+        return $this->items->sum(fn($item) => $item->product->price * $item->quantity);
     }
 }

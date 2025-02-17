@@ -15,7 +15,7 @@ class Product extends Model
     use hasFactory, softDeletes;
 
     protected $fillable = [
-        'name', 'thumbnail', 'slug', 'about','price', 'stock','products', 
+        'name','image' ,'thumbnail', 'slug', 'about','price', 'stock', 
         'category', 'price','user_id', 'is_popular', 'brands_id'
     ];
     public function cartItems()

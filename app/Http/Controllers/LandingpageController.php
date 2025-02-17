@@ -9,8 +9,11 @@ class LandingPageController extends Controller
 {
     public function index()
     {
-            // Jika pengguna sudah login, arahkan ke halaman landing page
-            return view('landingpage');
-        
-        }
+        return view('landingpage');
+    }
+
+    public function admin()
+    {
+        return redirect()->route('filament.admin.panel');
+    }
 }

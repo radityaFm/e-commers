@@ -16,15 +16,12 @@ class UserMiddleware
     
      public function handle(Request $request, Closure $next)
      {
-         if (!Auth::check()) {
-             return redirect()->route('auth.login'); // Redirect ke login jika belum login
+         // Cek apakah pengguna sudah login dan memiliki role 'user'
+         if (Auth::check() && Auth::user()->role === 'user') {
+             return $next($request);
          }
-     
-         // Contoh: Hanya user dengan role 'user' yang bisa lanjut
-         if (Auth::user()->role !== 'user') {
-             return redirect()->route('landingpage'); // Redirect ke landing page jika role tidak sesuai
-         }
-     
-         return $next($request);
+ 
+         // Jika bukan user, redirect ke halaman admin atau tampilkan error
+         return redirect()->route('/')->with('error', 'Anda tidak memiliki akses ke halaman admin.');
      }
 }

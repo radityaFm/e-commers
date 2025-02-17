@@ -46,9 +46,6 @@ class UserResource extends Resource
                     ->email()
                     ->unique(User::class, 'email')
                     ->maxLength(255),
-                TextInput::make('phone_number')
-                    ->numeric()
-                    ->maxLength(15),
                 TextInput::make('password')
                     ->required()
                     ->password()
@@ -106,7 +103,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+        
         ];
     }
 
@@ -117,5 +114,25 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+    // Method untuk membatasi akses
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->role === 'admin';
     }
 }

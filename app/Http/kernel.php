@@ -55,15 +55,15 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
-    protected $routeMiddleware = [
+    
+     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'admin' => \App\Http\Middleware\CheckAdmin::class,  // Middleware custom untuk memeriksa role admin
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,  // Untuk memastikan email diverifikasi
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class, // Redirect pengguna yang sudah login
-        'user' => \App\Http\Middleware\UserMiddleware::class, 
-        'role' => \App\Http\Middleware\CheckRole::class,
-        
+        'guest' => \App\Http\Middleware\GuestMiddleware::class,
+        'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+        'user' => \App\Http\Middleware\UserMiddleware::class,
+        'checkrole' => \App\Http\Middleware\CheckRole::class, // ✅ Pastikan ini ada!
     ];
+    
 
     /**
      * The application's console middleware stack.

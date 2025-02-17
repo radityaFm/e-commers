@@ -54,12 +54,16 @@ class ProductResource extends Resource
                         Fileupload::make('thumbnail')
                             ->label('Product Image')
                                 ->image()
+                                ->disk('public')
+                                ->directory('product')
                                 ->required(),
                         Repeater::make('product_photo')
                                 ->relationship('photos')
                                 ->schema([
                                     FileUpload::make('photo')
                                         ->image()
+                                        ->disk('public')
+                                        ->directory('product')
                                         ->required(),
                                 ]),
                         Repeater::make('sizes')
@@ -124,6 +128,7 @@ class ProductResource extends Resource
                     ->searchable(),
                 ImageColumn::make('thumbnail')
                     ->label('Image')
+                    ->defaultImageUrl('storage/product/{filename}')
                     ->width(100)
                     ->height(100),
                 TextColumn::make('price')

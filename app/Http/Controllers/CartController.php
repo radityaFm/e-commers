@@ -33,37 +33,63 @@ class CartController extends Controller
 
     return view('cart', compact('cartItems', 'total'))->with('isCheckout', session()->get('isCheckout', false));
 }
-
-    // Menambahkan produk ke keranjang
-    public function addToCart(Request $request)
+public function addToCart(Request $request)
 {
+    // Validasi input
     $validated = $request->validate([
         'product_id' => 'required|exists:products,id',
         'quantity' => 'required|integer|min:1',
     ]);
 
+    // Pastikan pengguna sudah login
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu!');
+    }
+
+    // Ambil data produk
+    $product = Product::find($validated['product_id']);
+
+    // Cek stok produk
+    if ($product->stock < $validated['quantity']) {
+        return redirect()->back()->with('error', 'Jumlah melebihi stok yang tersedia! Stok tersedia: ' . $product->stock);
+    }
+
+    // Dapatkan atau buat keranjang untuk pengguna yang sedang login
     $cart = Cart::firstOrCreate([
         'user_id' => auth()->id(),
     ]);
 
+    // Cek apakah produk sudah ada di keranjang
     $cartItem = CartItem::where('cart_id', $cart->id)
         ->where('product_id', $validated['product_id'])
         ->first();
 
     if ($cartItem) {
-        // Jika sudah ada, update jumlahnya
+        // Jika produk sudah ada, update jumlahnya
+        $newQuantity = $cartItem->quantity + $validated['quantity'];
+
+        // Cek stok lagi setelah penambahan quantity
+        if ($product->stock < $newQuantity) {
+            return redirect()->back()->with('error', 'Jumlah melebihi stok yang tersedia! Stok tersedia: ' . $product->stock);
+        }
+
         $cartItem->update([
-            'quantity' => $cartItem->quantity + $validated['quantity']
+            'quantity' => $newQuantity,
         ]);
     } else {
-        // Jika belum ada, tambahkan item baru
+        // Jika produk belum ada, tambahkan sebagai item baru
         CartItem::create([
             'cart_id' => $cart->id,
             'product_id' => $validated['product_id'],
             'quantity' => $validated['quantity'],
+            'status' => 'active', // Default status
         ]);
     }
 
+    // Kurangi stok produk
+    $product->decrement('stock', $validated['quantity']);
+
+    // Redirect ke halaman keranjang dengan pesan sukses
     return redirect()->route('cart')->with('success', 'Produk berhasil ditambahkan ke keranjang!');
 }
 public function updateCart(Request $request, $id)
@@ -72,10 +98,10 @@ public function updateCart(Request $request, $id)
         'quantity' => 'required|integer|min:1'
     ]);
 
-    $cartItem = CartItem::find($id);
+    $cartItem = CartItem::findOrFail($id); // Jika tidak ditemukan, otomatis 404
 
-    if (!$cartItem) {
-        return back()->with('error', 'Item tidak ditemukan.');
+    if (!$cartItem->product) {
+        return back()->with('error', 'Produk tidak ditemukan.');
     }
 
     $product = $cartItem->product;
@@ -83,32 +109,70 @@ public function updateCart(Request $request, $id)
     $newQuantity = $request->quantity;
     $difference = $newQuantity - $oldQuantity;
 
-    if ($difference > 0 && $product->stock < $difference) {
-        return back()->with('error', 'Stok tidak mencukupi.');
+    // Jika jumlah bertambah, cek stok tersedia
+    if ($difference > 0) {
+        if ($product->stock < $difference) {
+            return back()->with('error', 'Stok tidak mencukupi.');
+        }
+        $product->decrement('stock', $difference);
+    } 
+    // Jika jumlah berkurang, kembalikan stok
+    elseif ($difference < 0) {
+        $product->increment('stock', abs($difference));
     }
 
     $cartItem->update(['quantity' => $newQuantity]);
-    $product->decrement('stock', max($difference, 0));
-    $product->increment('stock', min($difference, 0));
 
     return back()->with('success', 'Jumlah produk diperbarui.');
 }
+    
+public function removeCart($id)
+{
+    try {
+        DB::beginTransaction();
 
-    // Menghapus item dari keranjang
-    public function removeCart($id)
-    {
-        $cartItem = CartItem::find($id);
-    
-        if (!$cartItem) {
-            return redirect()->back()->with('error', 'Produk tidak ditemukan di keranjang.');
+        // Cari keranjang pengguna
+        $cart = Cart::where('user_id', auth()->id())->first();
+
+        if (!$cart) {
+            DB::rollBack();
+            return back()->with('error', 'Keranjang tidak ditemukan.');
         }
-    
-        // Kembalikan stok saat dihapus
-        $cartItem->product->increment('stock', $cartItem->quantity);
+
+        // Cari item dalam keranjang berdasarkan ID
+        $cartItem = CartItem::where('cart_id', $cart->id)
+            ->where('id', $id) // ID item keranjang, bukan ID produk
+            ->first();
+
+        if (!$cartItem) {
+            DB::rollBack();
+            return back()->with('error', 'Item tidak ditemukan dalam keranjang.');
+        }
+
+        // Kembalikan stok produk
+        $product = Product::find($cartItem->product_id);
+        if ($product) {
+            $product->increment('stock', $cartItem->quantity);
+        }
+
+        // Hapus item dari keranjang
         $cartItem->delete();
-    
-        return redirect()->back()->with('success', 'Produk berhasil dihapus.');
-    }    
+
+        // Cek apakah keranjang kosong setelah penghapusan
+        if ($cart->cartItems()->count() === 0) {
+            // Jika keranjang kosong, hapus keranjang (opsional)
+            $cart->delete();
+        }
+
+        DB::commit();
+        return back()->with('success', 'Produk berhasil dihapus dari keranjang.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        // Log error untuk debugging
+        \Log::error('Error removing cart item: ' . $e->getMessage());
+        return back()->with('error', 'Terjadi kesalahan saat menghapus produk.');
+    }
+}
     // Menampilkan keranjang
     public function viewCart()
     {
@@ -187,7 +251,8 @@ public function updateCart(Request $request, $id)
             ]);
         } catch (\Exception $e) {
             DB::rollback();
+            \Log::error('Checkout error: ' . $e->getMessage()); // Log error untuk debugging
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
-    }             
+    }
 }

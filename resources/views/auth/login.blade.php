@@ -13,7 +13,7 @@
         window.location.href = '{{ route('landingpage') }}';
     </script>
 @endif
-<body class="bg-light">
+
 <div class="container d-flex justify-content-center align-items-center gap-3" style="min-height: 100vh;">
     <!-- Gambar (Akan hilang di tampilan kecil) -->
     <div class="col-md-6 d-none d-md-block">
@@ -40,7 +40,7 @@
                 </div>
                 @endif
 
-                <form action="{{ route('auth.login') }}" method="POST">
+                <form action="{{ route('auth.login.submit') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>

@@ -5,22 +5,16 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
-class AuthenticatehMiddleware
+class AuthenticateMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        // Cek apakah pengguna sudah login
         if (!Auth::check()) {
-            return redirect()->route('auth.login'); // Pastikan route ini ada di route:list
+            return redirect()->route('auth.login')->with('error', 'Anda belum login, silahkan login terlebih dahulu.');
         }
-    
+
         return $next($request);
     }
-    protected function redirectTo($request)
-{
-    if (!$request->expectsJson()) {
-        return route('auth.login'); // Sesuai dengan yang ada di routes/web.php
-    }
-}
 }

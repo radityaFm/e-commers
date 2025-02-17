@@ -408,33 +408,20 @@
 <section id="products" class="container text-center py-5 mb-5">
     <div class="row mt-5 my-5 bg-white py-5 px-3 rounded">
         <h2 class="mb-4">Produk Kami</h2>
-        <div class="col-md-2"></div>
+        <div class="col-md-4"></div>
         
         <!-- Susu Jeli -->
-        <div class="col-md-4">
+        <div class="col-sm-4">
             <div class="card p-4">
-                <i class="fas fa-glass-whiskey fa-3x mb-3 text-primary"></i>
-                <h5 class="card-title my-5 mb-3 mt-3">Susu Jeli</h5>
-                <p class="card-text my-5 mb-3 mt-3">Jajanan susu dengan jeli, terbuat tanpa pewarna dan pengawet</p>
-                <div class="d-flex justify-content-center">
+                <i class="card-title my-5 mb-4 fs-4">Susu Jeli dan yogurt</i>
+                <p class="card-text justify-center my-4 mb-4">jangan lupa mengirim pesan melalui whatsAPP jika ingin membeli</p>
+                <div class="d-flex justify-content-center mt-3">
                     <a href="{{ route('user.product') }}" class="btn btn-success btn-md my-3" style="width: 50%;">Pesan</a>
                 </div>
             </div>
-        </div>
+    </div>
 
-        <!-- Yogurt -->
-        <div class="col-md-4">
-            <div class="card p-4">
-                <i class="fas fa-utensils fa-3x mb-3 text-danger"></i>
-                <h5 class="card-title my-5 mb-3 mt-3">Yogurt</h5>
-                <p class="card-text my-5 mb-3 mt-3">Jajanan yogurt, terbuat tanpa pewarna dan pengawet</p>
-                <div class="d-flex justify-content-center">
-                    <a href="{{ route('user.product') }}" class="btn btn-success btn-md my-3" style="width: 50%;">Pesan</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2"></div>
+        <div class="col-md-4"></div>
     </div>
 </section>
     <!-- Footer -->

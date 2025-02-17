@@ -86,7 +86,7 @@
                 </form>
 
                 <div class="text-center mt-3">
-                    <p>Sudah punya akun? <a href="{{ route('auth.login') }}">Login sekarang</a></p>
+                    <p>Sudah punya akun? <a href="{{ route('login') }}">Login sekarang</a></p>
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['show']);
+        $this->middleware('user')->except(['show']);
     }
 
     public function show()
@@ -18,6 +18,15 @@ class ProductController extends Controller
         $products = Product::all();
         return view('user.product', compact('products'));
     }
+    public function index()
+{
+    if (!Auth::check()) {
+        return redirect()->route('user.product')->with('error', 'Maaf, Anda belum login. Silakan login terlebih dahulu.');
+    }
+
+    $products = Product::all();
+    return view('user.product', compact('products'));
+}
 
     public function purchase(Request $request, $id)
     {

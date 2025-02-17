@@ -17,27 +17,37 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Validasi input login
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|string|min:5',
         ]);
-
-        // Cek apakah email sudah terdaftar di database
+    
         $user = User::where('email', $request->email)->first();
+    
         if (!$user) {
             return redirect()->route('auth.login')->with('error', 'Maaf, Anda belum register.')->withInput();
         }
-
-        // Cek kredensial login
+    
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // Regenerasi session untuk keamanan
             $request->session()->regenerate();
-
-            // Redirect ke landing page dengan notifikasi sukses
-            return redirect()->route('landingpage')->with('success', 'Login berhasil! Selamat datang.');
+    
+            // Cek jika login dari Filament (admin panel)
+            if ($request->is('admin/*') || $request->is('admin')) {
+                if ($user->role !== 'admin') {
+                    Auth::logout();
+                    return redirect()->route('auth.login')->with('error', 'Anda tidak memiliki akses admin.')->withInput();
+                }
+    
+                return redirect()->route('admin')->with('success', 'Login berhasil! Selamat datang Admin');
+            }
+    
+            // Redirect berdasarkan role
+            if ($user->role === 'user') {
+                return redirect()->route('/')->with('success', 'Login berhasil! Selamat datang');
+            } else {
+                return redirect()->route('admin')->with('success', 'Login berhasil! Selamat datang Admin');
+            }
         } else {
-            // Jika password salah, kembali ke halaman login dengan error
             return redirect()->route('auth.login')->with('error', 'Email atau password salah.')->withInput();
         }
     }
@@ -69,11 +79,12 @@ class AuthController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // Enkripsi password
+            'password' => Hash::make($request->password),
+            'role' => 'user', // Default role adalah user
         ]);
 
         // Redirect ke form login setelah registrasi sukses
-        return redirect()->route('auth.login')->with('success', 'Registrasi berhasil! Silakan login.');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
     // Menangani logout
@@ -87,6 +98,6 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect ke halaman login setelah logout
-        return redirect()->route('auth.login');
+        return redirect()->route('login');
     }
 }
