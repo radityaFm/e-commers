@@ -18,6 +18,11 @@
                 </div>
             </div>
             <div class="card-body">
+                <!-- Form untuk Checkout -->
+                <form id="checkoutForm" action="{{ route('checkout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -26,7 +31,6 @@
                                 <th>Harga</th>
                                 <th>Jumlah</th>
                                 <th>Total</th>
-                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -50,19 +54,14 @@
                                         {{ number_format(optional($item->product)->price * $item->quantity ?? 0, 0, ',', '.') }}
                                     </span></td>
                                     <td>
-                                        @if($item->status === 'checked_out')
-                                            <span class="badge bg-success">Checked Out</span>
-                                        @else
-                                            <span class="badge bg-warning">Belum Checkout</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($item->status !== 'checked_out')
+                                        @if(!$item->is_fixed)
                                             <form action="{{ route('cart.removeCart', $item->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                                <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
                                             </form>
+                                        @else
+                                            <button class="btn btn-secondary" disabled>Pesanan Fixed</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -73,8 +72,7 @@
 
                 <div class="d-flex justify-content-between mt-3">
                     <a href="{{ route('user.product') }}" class="btn btn-outline-primary">Kembali Belanja</a>
-                    <button type="submit" class="btn btn-primary" id="checkoutButton" 
-                        {{ $cartItems->where('status', '!=', 'checked_out')->isEmpty() ? 'disabled' : '' }}>
+                    <button type="button" class="btn btn-primary" id="checkoutButton">
                         Checkout Sekarang
                     </button>
                 </div>
@@ -90,6 +88,7 @@
     @endif
 </div>
 @endsection
+
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -143,33 +142,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('updateCartForm').submit();
     });
 
+    // Tombol Checkout
     document.getElementById('checkoutButton').addEventListener('click', function (e) {
-    e.preventDefault();
+        e.preventDefault(); // Mencegah form submit default
 
-    if (confirm('Apakah Anda yakin ingin checkout?')) {
-        fetch("{{ route('cart.checkout') }}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                window.location.href = data.redirect_url;
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat checkout.');
-        });
-    }
-});
+        if (confirm('Apakah Anda yakin ingin checkout?')) {
+            // Kirim form checkout
+            document.getElementById('checkoutForm').submit();
+        }
+    });
+
     // Tombol Pesan Lewat WhatsApp
     document.getElementById('whatsappOrder').addEventListener('click', function() {
         let phoneNumber = "6287831002289"; // Nomor WhatsApp tanpa + atau -

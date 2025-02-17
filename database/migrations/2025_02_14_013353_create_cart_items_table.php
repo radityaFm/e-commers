@@ -11,7 +11,6 @@ return new class extends Migration {
             $table->foreignId('cart_id')->constrained()->onDelete('cascade'); // Relasi ke tabel carts
             $table->foreignId('product_id')->constrained()->onDelete('cascade'); // Relasi ke tabel products
             $table->integer('quantity')->default(1); // Jumlah produk
-            $table->string('status')->default('pending');
             $table->timestamps();
     
             // Tambahkan unique constraint jika diperlukan

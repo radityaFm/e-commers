@@ -8,6 +8,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -213,46 +214,57 @@ public function removeCart($id)
     }
     public function checkout(Request $request)
     {
-        $userId = auth()->id();
-        $cartItems = Cart::where('user_id', $userId)->with('product')->get();
-    
-        if ($cartItems->isEmpty()) {
-            return response()->json(['success' => false, 'message' => 'Keranjang kosong.']);
-        }
-    
-        DB::beginTransaction();
-    
         try {
+            // Ambil ID user yang sedang login
+            $userId = auth()->id();
+
+            // Ambil semua item keranjang belanja user
+            $cartItems = Cart::where('user_id', $userId)
+                ->with('product')
+                ->get();
+
+            // Jika keranjang kosong, kembalikan response error
+            if ($cartItems->isEmpty()) {
+                return redirect()->back()->with('error', 'Keranjang kosong.');
+            }
+
+            // Mulai transaksi database
+            DB::beginTransaction();
+
             foreach ($cartItems as $item) {
-                $product = $item->product; // Mengambil produk dari relasi
-    
+                $product = $item->product; // Ambil produk dari relasi
+
+                // Jika produk tidak ditemukan, lemparkan exception
                 if (!$product) {
-                    throw new \Exception("Produk tidak ditemukan dalam database.");
+                    throw new \Exception("Produk tidak ditemukan: {$item->product_id}.");
                 }
-    
+
+                // Jika stok produk tidak mencukupi, lemparkan exception
                 if ($product->stock < $item->quantity) {
                     throw new \Exception("Stok tidak cukup untuk produk: {$product->name}.");
                 }
-    
+
                 // Kurangi stok produk
                 $product->decrement('stock', $item->quantity);
-                $product->refresh(); // Pastikan stok di-refresh setelah dikurangi
-    
-                // Tandai pesanan sebagai "checked_out" agar tidak bisa diedit atau dihapus lagi
-                $item->update(['status' => 'checked_out']);
+
+                // Tandai pesanan sebagai "fixed" (tidak bisa di-edit atau dihapus)
+                $item->update(['is_fixed' => true]);
             }
-    
+
+            // Commit transaksi jika semua operasi berhasil
             DB::commit();
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'Checkout berhasil!',
-                'redirect_url' => route('user.product')
-            ]);
+
+            // Berikan response sukses
+            return redirect()->route('user.product')->with('success', 'Checkout berhasil! Pesanan Anda telah fixed.');
         } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi error
             DB::rollback();
-            \Log::error('Checkout error: ' . $e->getMessage()); // Log error untuk debugging
-            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+
+            // Log error untuk debugging
+            Log::error('Checkout error: ' . $e->getMessage());
+
+            // Berikan response error
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }
