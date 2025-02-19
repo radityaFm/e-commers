@@ -6,43 +6,40 @@
     <title>Landing Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-       html, body {
+        html, body {
         overflow-x: hidden;
         width: 100%;
-        background-color: #ffff;
+        background-color: #ffffff;
     }
+
     .cart-icon {
-        color: white; /* Warna teks putih */
+        color: white;
     }
+
     .navbar {
-        background-color: black !important; /* Warna hitam penuh */
-        width: 100%; /* Mencakup seluruh lebar */
-    }
-    .navbar-nav {
-        flex-direction: row;
-        gap: 15px;
-    }
+    background-color: #222023;
+    background-image: black;
+    color: #fff;
+    padding: 10px 0;
+}
 
-    .navbar-nav .nav-item {
-        margin: 0;
-    }
+/* Class untuk Gradient */
+.urgent {
+    background-color: #222023;
+    background-image: black;
+    background-color: rgba(34, 32, 35, 0.8); /* Warna dengan transparansi */
+    backdrop-filter: blur(10px); /* Efek blur */
+    color: #fff;
+}
 
-    .navbar-nav .nav-link {
+    .navbar-brand {
+        font-size: 30px;
         color: white !important;
     }
 
-    .search-desktop,
-    .search-mobile {
-        display: none;
-    }
-
-    /* .navbar-toggler {
+    .navbar-toggler {
         border: none;
         outline: none;
-    } */
-    span.account {
-        font-size: 1.2rem;
-        font-weight: bold;
     }
 
     .navbar-toggler-icon {
@@ -54,14 +51,36 @@
         transition: all 0.3s ease;
     }
 
-    /* Menampilkan dropdown saat hover pada dropdown */
-    .hover-dropdown:hover .dropdown-menu {
-        display: block;
-        opacity: 1;
-        visibility: visible;
+    .navbar-nav {
+        flex-direction: column;
+        gap: 10px;
     }
 
-    /* Gaya item dropdown */
+    .navbar-nav .nav-item {
+        margin: 0;
+    }
+
+    .navbar-nav .nav-link {
+        color: white !important;
+        font-size: 18px;
+    }
+
+    .search-desktop,
+    .search-mobile {
+        display: none;
+    }
+
+    span.account {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    /* Dropdown */
+    .dropdown-menu {
+        background-color: #f1f1f1;
+        border: none;
+    }
+
     .dropdown-item {
         padding: 15px 25px;
         font-size: 16px;
@@ -69,14 +88,19 @@
         color: #333;
     }
 
-    /* Efek hover pada item dropdown */
     .dropdown-item:hover,
     .dropdown-item:focus {
-        background-color: #f1f1f1 !important;
+        background-color: #f1f1f2 !important;
         color: #008C74;
     }
 
-    /* Animasi fade-in */
+    .hover-dropdown:hover .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Animasi */
     @keyframes fadeIn {
         0% { opacity: 0; }
         100% { opacity: 1; }
@@ -109,6 +133,330 @@
         font-size: 1.2rem;
         margin-top: 20px;
     }
+
+    /* footer */
+    h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {}
+        a,
+        a:hover,
+        a:focus,
+        a:active {
+            text-decoration: none;
+            outline: none;
+        }
+        
+        a,
+        a:active,
+        a:focus {
+            color: #333;
+            text-decoration: none;
+            transition-timing-function: ease-in-out;
+            -ms-transition-timing-function: ease-in-out;
+            -moz-transition-timing-function: ease-in-out;
+            -webkit-transition-timing-function: ease-in-out;
+            -o-transition-timing-function: ease-in-out;
+            transition-duration: .2s;
+            -ms-transition-duration: .2s;
+            -moz-transition-duration: .2s;
+            -webkit-transition-duration: .2s;
+            -o-transition-duration: .2s;
+        }
+        
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        img {
+    max-width: 100%;
+    height: auto;
+}
+        section {
+            padding: 60px 0;
+           /* min-height: 100vh;*/
+        }
+.btn {
+    text-transform: uppercase;
+    -webkit-transition: all 0.8s;
+    -moz-transition: all 0.8s;
+    -o-transition: all 0.8s;
+    transition: all 0.8s;
+}
+.red-btn {
+    background: #ed1b24;
+    border: 2px solid #ed1b24;
+    color: #fff;
+}
+
+.red-btn:hover{
+    background: #1c376c;
+    color: #fff;
+    border-color: #ffffff;
+}
+
+/*---------footer---------*/
+footer {
+    background-color: #222023;
+    background-image: -webkit-linear-gradient( top, #222023, #1e2c47 );
+    background-image: -moz-linear-gradient( top, #222023, #1e2c47 );
+    background-image: -o-linear-gradient( top, #222023, #1e2c47 );
+    background-image: linear-gradient( to bottom, #222023, #1e2c47 );
+    color: #fff;
+    padding: 220px 0;
+    font-size: 17px;
+}
+footer h3 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+footer h4 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+.about-footer li i {
+    position: absolute;
+    left: 0;
+}
+.about-footer li {
+    padding-left: 40px;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.about-footer ul {
+    margin-top: 40px;
+}
+
+footer a {
+    color: #fff;
+}
+
+footer a:hover {
+    color: #ed1b24;
+}
+.footer-title {
+    border-bottom: 2px solid #a61f2d;
+    padding-bottom: 25px;
+    margin-bottom: 35px;
+}
+
+ul.footer-social {
+    float: right;
+}
+
+ul.footer-social li {
+    display: inline;
+    margin-right: 16px;
+}
+
+ul.footer-social i {
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    color: #222025;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 30px;
+    font-size: 16px;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    font-weight: 800;
+}
+
+ul.footer-social li:last-child {
+    margin-right: 0px;
+}
+
+ul.footer-social i:hover {
+    background: #ed1b24;
+    color: #fff;
+}
+
+.page-more-info li {
+    margin-bottom: 31px;
+}
+
+footer .table td:first-child {
+    font-weight: 600;
+    padding-left: 33px;
+}
+
+footer .table td:last-child {text-align: right;}
+footer .table td {
+    padding: 0px;
+    border: 0;
+}
+
+footer .table tr {
+}
+
+footer .table td i {
+    position: absolute;
+    left: 0px;
+    font-size: 21px;
+    top: 6px;
+}
+
+footer .table td {
+    position: relative;
+    padding: 4px 0;
+}
+.footer-logo td {
+    padding-right: 4px !important;
+}
+
+.footer-logo td:last-child {
+    padding-right: 0px !important;
+}
+footer hr {
+    border-color: #9294a0;
+}
+
+.footer-bottom p {
+    text-align: right;
+}
+.footer-bottom {
+    margin-top: 30px;/* Footer */
+}
+#footer {
+    background-color: #343a40; /* Warna latar belakang footer */
+    color: #fff; /* Warna teks */
+}
+
+#footer .footer-top {
+    padding: 40px 0;
+}
+
+#footer .about-footer h3,
+#footer .footer-title h4 {
+    margin-bottom: 20px;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+#footer ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+#footer ul li {
+    margin-bottom: 10px;
+}
+
+#footer ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#footer ul li a:hover {
+    color: #ffcc00; /* Warna saat hover */
+}
+
+#footer .red-btn {
+    background-color: #dc3545; /* Warna tombol */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+#footer .red-btn:hover {
+    background-color: #c82333; /* Warna tombol saat hover */
+}
+
+#footer hr {
+    border-color: rgba(255, 255, 255, 0.1); /* Warna garis pemisah */
+}
+
+#footer .footer-bottom {
+    padding: 20px 0;
+    font-size: 0.9rem;
+}
+
+#footer .footer-bottom a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#footer .footer-bottom a:hover {
+    color: #ffcc00; /* Warna saat hover */
+}
+/* Footer */
+#footer {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.footer-top {
+    padding: 40px 0;
+}
+
+.about-footer h3,
+.page-more-info h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.about-footer ul,
+.page-more-info ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+.about-footer ul li,
+.page-more-info ul li {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.about-footer ul li i {
+    margin-right: 10px;
+    color: #fff;
+}
+
+.about-footer .tentang-kami-text {
+    text-indent: 30px;
+    text-align: justify;
+    margin: 0;
+    padding: 0;
+}
+
+.red-btn {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.red-btn:hover {
+    background-color: #c82333;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 0.9rem;
+}
 @media (min-width: 765px) {
     .search-desktop {
         display: block; /* Menampilkan kolom pencarian di layar besar */
@@ -161,75 +509,153 @@
         margin-right: 20px; /* Menyesuaikan margin kanan agar tidak terlalu jauh */
         top: -5px; /* Pindahkan sedikit ke atas agar sejajar */
     }
+    .navbar-toggler {
+            display: inline-block;
+        }
 
-    #userDropdown {
-        flex-direction: column; /* Tampilkan secara vertikal */
-        text-align: left; /* Menyelaraskan teks ke kiri */
-        display: none;
-    }
+        .collapse:not(.show) {
+            display: none;
+        }
 
-    #userDropdown .fs-5 {
-        font-size: 14px; /* Ukuran font kecil di layar kecil */
-        margin-right: 30px;
-    }
+        .navbar-nav {
+            flex-direction: column;
+            text-align: left;
+        }
 
-    #userDropdown .account {
-        font-size: 16px; /* Ukuran font untuk nama pengguna */
-        text-align: left; /* Menyelaraskan teks nama pengguna ke kiri */
-        margin-left: 0; /* Menghapus margin kiri agar teks berada di pojok kiri */
+        .navbar-nav .nav-item {
+            margin-bottom: 2px;
+            margin-top: 20px;
+        }
+
+        .search-container form {
+            justify-content: left;
+        }
+
+        .search-container input {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .search-mobile {
+            display: block;
+        }
+
+        .keranjang {
+            position: relative;
+            margin-right: 20px;
+            top: -5px;
+        }
+
+        .d-flex.justify-content-end {
+            justify-content: flex-start !important;
+        }
+
+        #userDropdown {
+            margin-left: 0;
+        }
+
+        .account {
+            font-size: 1rem;
+        }
+
+        #userDropdown .fs-5 {
+            font-size: 14px;
+            margin-right: 30px;
+        }
+
+        #userDropdown .account {
+            font-size: 16px;
+            text-align: left;
+            margin-left: 0;
+        }
+    .col-sm-4 {
+        width: 100%; /* Bisa disesuaikan */
+        max-width: 400px; /* Atau sesuaikan sesuai keinginan */
+        margin: 0 auto; /* Agar tetap di tengah */
     }
 }
+
+    .btn.btn-success {
+        width: 70%; /* Memperbesar tombol agar lebih nyaman di klik */
+    }
 
 /* Media Query untuk layar dengan lebar maksimal 320px */
 @media (max-width: 320px) {
     .keranjang {
-        margin-right: 40px; /* Memberikan lebih banyak ruang di kanan untuk tampilan lebih rapi */
-    }
+            margin-right: 40px;
+        }
 
-    /* Penyesuaian ukuran font atau elemen lain untuk layar 320px */
-    #userDropdown {
-        flex-direction: column;
-        text-align: left;
-        display: none;
-    }
-    
+        #userDropdown {
+            flex-direction: column;
+            text-align: left;
+            display: none;
+        }
 
-    #userDropdown .fs-5 {
-        font-size: 4px; /* Ukuran font kecil di layar kecil */
-        margin-right: 30px;
-    }
+        #userDropdown .fs-5 {
+            font-size: 4px;
+            margin-right: 30px;
+        }
 
-    #userDropdown .account {
-        font-size: 16px; /* Ukuran font untuk nama pengguna */
-    }
-}
+        #userDropdown .account {
+            font-size: 16px;
+        }
+            .red-btn {
+        background-color: #dc3545;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        margin-bottom: 20px;
 
+    }
+    .menu{
+        margin-top: 20px;
+
+    }
+    }
 /* Media Query untuk layar 768px - 1024px (Tablet) */
 @media (min-width: 768px) and (max-width: 1024px) {
     #userDropdown {
-        flex-direction: row; /* Menjaga elemen dalam dropdown tetap horizontal */
-        justify-content: space-between; /* Memberikan ruang antara elemen */
-    }
+            flex-direction: row;
+            justify-content: space-between;
+        }
 
-    #userDropdown .fs-5 {
-        font-size: 16px; /* Ukuran font sedikit lebih besar di layar menengah */
-        margin-right: 30px;
-    }
+        #userDropdown .fs-5 {
+            font-size: 16px;
+            margin-right: 30px;
+        }
 
-    #userDropdown .account {
-        font-size: 18px; /* Ukuran font untuk nama pengguna */
-    }
-    .search-desktop,
+        #userDropdown .account {
+            font-size: 18px;
+        }
+
+        .search-desktop,
         .search-mobile {
             display: none;
         }
+
         .hero h1 {
             font-size: 2.5rem;
         }
+        .about-footer,
+    .page-more-info {
+        flex: 0 0 50%; /* Mengatur lebar kolom menjadi 50% */
+        max-width: 50%;
+    }
 }
 @media (min-width: 1440px) {
-    #dropdownakun{
-        display: none !important;
+    #dropdownakun {
+            display: none !important;
+ }
+ .col-sm-4 {
+        width: 80%; /* Bisa disesuaikan */
+        max-width: 200px; /* Atau sesuaikan sesuai keinginan */
+        margin: 0 auto; /* Agar tetap di tengah */
     }
 }
 @media (max-width: 1024px) {
@@ -237,20 +663,19 @@
         display: none !important;
     }
 }
+.features {
+        padding: 60px 20px;
+    }
 
-        .features {
-            padding: 60px 20px;
-        }
-
-        .features .icon {
-            font-size: 50px;
-            color: #0d6efd;
-        }
+    .features .icon {
+        font-size: 50px;
+        color: #0d6efd;
+    }
     </style>
 </head>
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-black">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #222023;">
     <div class="container">
         <a class="navbar-brand" style="font-size:30px;">Mbak G</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -258,16 +683,15 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-3">
-                <li class="nav-item me-5 mx-5 ps-0"><a class="nav-link fs-5" href="#features">About us</a></li>
-                <li class="nav-item me-5 mx-5 ps-0"><a class="nav-link fs-5" href="#about">Produk</a></li>
-                <li class="nav-item me-5 mx-5 ps-0"><a class="nav-link fs-5" href="#contact">Testimoni</a></li>
+                <li class="nav-item me-2 mx-4 ps-0 fs-5"><a class="nav-link fs-5" href="#aboutus">About us</a></li>
+                <li class="nav-item me-4 mx-3 ps-0 fs-5"><a class="nav-link fs-5" href="#product">Produk</a></li>
             </ul>
 </div>
         </div>
     </div>
 </nav>
 <!-- Row untuk Search Bar -->
-<div class="row justify-content-center" style="background-color: black; padding: 20px 0;">
+<div class="row justify-content-center urgent" style=" padding: 20px 0; background-color: #222023;">
     <div class="col-1"></div>
     <div class="col-1">
     <!-- Keranjang -->
@@ -285,13 +709,7 @@
         <!-- Akun -->
         @auth
         <div class="dropdownakun hover-dropdown ms-3">
-            <a class="user text-decoration-none text-light" id="dropdownakun" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                    <path d="M13.5 8a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6m0 1a6.978 6.978 0 0 0-4.546 1.633A5.985 5.985 0 0 0 8 14a5.985 5.985 0 0 0 4.546-2.367A6.978 6.978 0 0 0 8 10"/>
-                </svg>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+            <ul class="dropdown-menu dropdown-menu-end me-4" aria-labelledby="dropdownUser">
                 <li><a class="dropdown-item" href="{{ route('account.profile') }}">Pengaturan Akun</a></li>
                 <li>
                     <form action="{{ route('logout') }}" method="POST">
@@ -309,8 +727,7 @@
     @auth
         <div class="dropdown ms-3 hover-dropdown">
             <a class="d-flex align-items-center text-decoration-none text-light" id="userDropdown">
-                <p class="fs-5 mb-0 me-2">Welcome</p>
-                <span class="account">{{ Auth::user()->name }}</span>
+                <h6 class="fs-5 me-5" style="color:white; font-weight:700:">welcome  <span class="account">{{ Auth::user()->   name }}</span></h6>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" href="{{ route('account.profile') }}">Pengaturan Akun</a></li>
@@ -328,7 +745,7 @@
 <div class=" py-2" style="background-color:black"></div>
 <div class="py-5 bg-light"></div>
 <div class="bg-light py-5"> <!-- Tambahkan py-5 untuk menggantikan mt-5 dan mb-5 -->
-    <section id="about" class="container-fluid text-center bg-light">
+<section id="aboutus" class="container-fluid text-center bg-light py-5">
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-1"></div>
             <div class="col-2">
@@ -346,31 +763,78 @@
 </div>
 <div class="py-5 bg-light"></div>
 <!-- Produk -->
- <div class="mt-4" style="background-color:#D9D9D9"></div>
-<section id="products" class="container text-center py-5 mb-5">
-    <div class="row mt-5 my-5 bg-white py-5 px-3 rounded">
+ <div class="mt-4" style="background-color:#ffff"></div>
+ <section id="product" class="container text-center py-5 bg-light">
+    <div class="row mt-5 my-5py-5 px-3 rounded">
         <h2 class="mb-4">Produk Kami</h2>
-        <div class="col-md-4"></div>
+        <div class="col-md-3"></div>
         
         <!-- Susu Jeli -->
-        <div class="col-sm-4">
-            <div class="card p-4">
-                <i class="card-title my-5 mb-4 fs-4">Susu Jeli dan yogurt</i>
-                <p class="card-text justify-center my-4 mb-4">jangan lupa mengirim pesan melalui whatsAPP jika ingin membeli</p>
-                <div class="d-flex justify-content-center mt-3">
-                    <a href="{{ route('user.product') }}" class="btn btn-success btn-md my-3" style="width: 50%;">Pesan</a>
+        <div class="col-md-6">
+            <div class="card p-5 w-80">
+                <i class="card-title my-5 mb-5 fs-4">Susu Jeli dan yogurt</i>
+                <p class="card-text justify-center my-4 mb-4 mt-5" style="margin-top:10px;">jangan lupa mengirim pesan melalui whatsAPP jika ingin membeli</p>
+                <div class="d-flex justify-content-center mt-3" style="margin-top:50px;">
+                    <a href="{{ route('user.product') }}" class="btn btn-success btn-md my-3" >Pesan</a>
                 </div>
             </div>
     </div>
 
-        <div class="col-md-4"></div>
+        <div class="col-md-3"></div>
     </div>
 </section>
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2025 Mbak G. Semua Hak Dilindungi.</p>
-    </footer>
+    <footer class="bg-dark text-white text-center py-3" id="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="row">
+                <!-- Kolom Tentang Kami -->
+                <div class="col-md-6 col-lg-6 about-footer mb-2">
+                    <h3>Tentang Kami</h3>
+                    <ul class="list-unstyled">
+                        <li class="me-5">
+                            <a><i class="fas fa-phone fa-flip-horizontal"></i> UMKM Mbak G</a>
+                        </li>
+                        <li class="me-5">
+                            <p class="tentang-kami-text">
+                                Memiliki produk utama yaitu susu jeli dan yogurt yang memiliki rasa yang enak, dibuat dengan bahan berkualitas, dan dijual dengan harga yang terjangkau.
+                            </p>
+                        </li>
+                    </ul>
+                    <a href="{{ route('user.product') }}" class="btn red-btn">Belanja Sekarang</a>
+                </div>
+                <div class="col-md-6 col-lg-6 page-more-info mt-2">
+                    <div class="footer-title">
+                        <h4 class="menu">Menu dan Bantuan</h4>
+                    </div>
+                    <ul class="list-unstyled">
+                        <li><a href="#aboutus">Beranda</a></li>
+                        <li><a href="https://wa.me/6287831002289">Hubungi Kami</a></li>
+                    </ul>
+                    </div>
+                </div>
+        </div>
 
+        <!-- Garis Pemisah -->
+        <hr class="my-4">
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+    <div class="row">
+        <div class="col-sm-4 text-sm-start">
+            <!-- Kolom kosong -->
+        </div>
+        <div class="col-sm-4 text-sm-center">
+            <!-- Teks Hak Cipta -->
+            <p >&copy; 2025 UMKM Mbak G. Semua Hak Dilindungi.</p>
+        </div>
+        <div class="col-sm-4 text-sm-start">
+            <!-- Kolom kosong -->
+        </div>
+    </div>
+</div>
+    </div>
+</footer>
     <script>
 const toggler = document.querySelector('.navbar-toggler');
 

@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('order.histori', [OrderController::class, 'orderHistory'])->name('order.histori');
+Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
 // Route::middleware('auth')->group(function () {
 //     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 //     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');

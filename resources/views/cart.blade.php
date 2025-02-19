@@ -78,18 +78,17 @@
                 </div>
 
                 <!-- Tombol Pesan Lewat WhatsApp -->
-                <div class="d-flex justify-content-center mt-3">
-                    <button id="whatsappOrder" class="btn btn-success">
-                        Pesan Langsung Lewat WhatsApp
-                    </button>
-                    <a href="{{ route('order.histori') }}"></a>
-                    <button class="btn btn-primary">
+                <div class="d-flex justify-content-center mt-5">
+                    <a href="{{ route('order.histori') }}">
+                    <button class="btn btn-primary ms-4">
                         Lihat history pemesanan
                     </button>
+                    <a>
                 </div>
             </div>
         </div>
     @endif
+    <div class="container py-4 mx-auto fs-4" style="color:red;">* Ketika sudah checkout pesanan, maka diharap memberi pesan melalui WhatsAPP untuk pembayaran</div>
 </div>
 @endsection
 
@@ -170,27 +169,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-    // Tombol Pesan Lewat WhatsApp
-    document.getElementById('whatsappOrder').addEventListener('click', function() {
-        let phoneNumber = "6287831002289"; // Nomor WhatsApp tanpa + atau -
-        let message = "Halo, saya ingin memesan produk berikut:\n\n";
-
-        document.querySelectorAll('.table tbody tr').forEach(function(row) {
-            let product = row.querySelector('td:first-child').innerText.trim();
-            let price = row.querySelector('.unit-price').dataset.price;
-            let quantity = row.querySelector('.quantity-input').value;
-            let total = row.querySelector('.total-price').innerText.trim();
-
-            message += `- ${product}\n  Harga: Rp ${parseInt(price).toLocaleString('id-ID')}\n  Jumlah: ${quantity}\n  Total: ${total}\n\n`;
-        });
-
-        message += "jika ada pesan tambahan : ";
-
-        let encodedMessage = encodeURIComponent(message);
-        let whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-        window.open(whatsappURL, '_blank');
-    });
 });
 </script>
 @endsection

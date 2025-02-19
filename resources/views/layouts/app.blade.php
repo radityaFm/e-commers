@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     @yield('styles')
     <style>
+
+
         .gradient-custom {
             background: linear-gradient(to bottom, #6a11cb, #2575fc);
         }
@@ -35,13 +37,28 @@
         .dropdown-menu li:last-child button:hover {
             color: red !important; /* Logout */
         }
+        
+        .navbar {
+            background-color: #222023;
+            background-image: black;
+            background-color: rgba(34, 32, 35, 0.8); /* Warna dengan transparansi */
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding:28px 0;
+        }
+
+    .card {
+        margin: 0 auto; /* Membuat card berada di tengah */
+        max-width: 1000px; /* Atur lebar maksimum card */
+    }
+
 
         /* nav hamburger */
         span.account {
         font-size: 1.2rem;
         font-weight: bold;
     }
-
+    
     .navbar-toggler-icon {
         width: 30px;
         height: 3px;
@@ -71,6 +88,25 @@
     .dropdown-item:focus {
         background-color: #f1f1f1 !important;
         color: #008C74;
+    }
+    .hover-dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    }
+
+    /* Mencegah dropdown menghilang saat berpindah ke dropdown-menu */
+    .hover-dropdown .dropdown-menu {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    /* Animasi fade-in */
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
     }
 
             /* Mengatur lebar dropdown berdasarkan ukuran layar */
@@ -108,10 +144,13 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <div class="container">
             <a class="navbar-brand fs-5" href="#">Mbak G</a>
-            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <div class="navbar-toggler">
                 <span class="navbar-toggler-icon"></span>
-            </button>
-            
+                <div class="dropdown-menu" style="display: none;">
+                    <a href="#" class="dropdown-item">Item 1</a>
+                    <a href="#" class="dropdown-item">Item 2</a>
+                </div>
+            </div>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link fs-5" href="{{('/')}}">Go to Landingpage</a></li>
@@ -119,7 +158,7 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('auth.register') }}">Daftar</a></li>
                     @else
-                        <li class="nav-item dropdown mt-1 ">
+                    <li class="nav-item dropdown mt-1 hover-dropdown">
                             <b><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 Welcome {{ Auth::user()->name }}
                             </a>
@@ -140,13 +179,28 @@
         </div>
     </nav>
 
-    <main class="py-4">
+    <main class="mt-5 my-5" style="margin-top:300px;">
         @yield('content')
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @yield('scripts')
+    @stack('scripts')
     @if(session('success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    navbarToggler.addEventListener('click', function() {
+        if (dropdownMenu.style.display === 'block') {
+            dropdownMenu.style.display = 'none';
+        } else {
+            dropdownMenu.style.display = 'block';
+        }
+    });
+});
+    </script>
     <script>
         Swal.fire({
             icon: 'success',
