@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -37,48 +38,59 @@ class ProfileController extends Controller
             'name' => $request->name,
         ]);
     
-        return redirect()->route('account.profile')->with('success', 'Profile updated successfully');
-    }    
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Maksimal 2MB
+    ]);
 
+    $user = auth()->user();
+    $user->name = $request->name;
 
-    public function updatePhoto(Request $request) {
-        $user = Auth::user();
-
-        $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $filename = time() . '.' . $request->photo->extension();
-        $request->photo->storeAs('public/profile', $filename);
-
-        $user->update(['photo' => $filename]);
-
-        return redirect()->route('account.profile')->with('success', 'Foto profil berhasil diperbarui.');
-    }
-
-    public function updatePassword(Request $request) {
-        $user = Auth::user();
-
-        $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed',
-        ]);
-
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->with('error', 'Password lama salah.');
+    // Handle upload foto
+    if ($request->hasFile('photo')) {
+        // Hapus foto lama jika ada
+        if ($user->photo) {
+            Storage::disk('public')->delete($user->photo);
         }
 
-        $user->update([
-            'password' => Hash::make($request->new_password),
-        ]);
-
-        return redirect()->route('account.profile')->with('success', 'Password berhasil diperbarui.');
+        // Simpan foto baru ke folder 'userPhotos'
+        $path = $request->file('photo')->store('userPhotos', 'public');
+        $user->photo = $path;
     }
+
+    $user->save();
+
+    return redirect()->route('account.profile')->with('success', 'Profile updated successfully!');
+}
+
+public function updateProfile(Request $request)
+{
+    $request->validate([
+        'photo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    $user = Auth::user();
+
+    if ($request->hasFile('photo')) {
+        // Hapus foto lama jika ada
+        if ($user->photo) {
+            Storage::delete('public/' . $user->photo);
+        }
+
+        // Simpan foto baru
+        $path = $request->file('photo')->store('userPhotos', 'public');
+        $user->photo = $path;
+    }
+
+    $user->save();
+
+    return redirect()->route('account.editprofile')->with('success', 'Profile updated successfully.');
+}
 
     public function deleteAccount() {
         $user = Auth::user();
         $user->delete();
 
-        return redirect()->route('auth.login')->with('success', 'Akun Anda telah dihapus.');
+        return redirect()->route('login')->with('success', 'Akun Anda telah dihapus.');
     }
 }

@@ -11,9 +11,13 @@ class LandingPageController extends Controller
     {
         return view('landingpage');
     }
+    protected function authenticated(Request $request, $user)
+{
+    return redirect()->route('landingpage');
+}
 
     public function admin()
     {
-        return redirect()->route('filament.admin.panel');
+        return redirect()->route('admin');
     }
 }

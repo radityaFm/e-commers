@@ -17,10 +17,7 @@ class AdminMiddleware
     {
         // Cek apakah pengguna sudah login dan memiliki role 'admin'
         if (Auth::check() && Auth::user()->role === 'admin') {
-            return $next($request);
+            return $next($request)->redirect()->route('/')->with('error', 'Anda tidak memiliki akses ke halaman admin.');;
         }
-
-        // Jika bukan admin, redirect ke halaman user atau tampilkan error
-        return redirect()->route('landingpage')->with('error', 'Anda tidak memiliki akses ke halaman admin.');
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
     class CartItem extends Model
     {
-        protected $fillable = ['cart_id', 'product_id', 'quantity', 'status'];
+        protected $fillable = ['cart_id', 'product_id', 'quantity'];
 
         public function cart()
         {
@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
         {
             return $this->belongsTo(Product::class);
         }
-    
         public function isCheckedOut()
         {
             return $this->status === 'checked_out';

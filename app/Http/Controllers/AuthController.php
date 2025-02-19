@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     // Menampilkan form login
-    public function showLoginForm()
+    public function show()
     {
         return view('auth.login');
     }
@@ -45,7 +45,7 @@ class AuthController extends Controller
             if ($user->role === 'user') {
                 return redirect()->route('/')->with('success', 'Login berhasil! Selamat datang');
             } else {
-                return redirect()->route('admin')->with('success', 'Login berhasil! Selamat datang Admin');
+                return redirect()->route('/')->with('success', 'Login berhasil! Selamat datang Admin');
             }
         } else {
             return redirect()->route('auth.login')->with('error', 'Email atau password salah.')->withInput();
@@ -98,6 +98,6 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect ke halaman login setelah logout
-        return redirect()->route('login');
+        return redirect()->route('/');
     }
 }

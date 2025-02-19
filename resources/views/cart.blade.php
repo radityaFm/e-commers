@@ -54,16 +54,16 @@
                                         {{ number_format(optional($item->product)->price * $item->quantity ?? 0, 0, ',', '.') }}
                                     </span></td>
                                     <td>
-                                        @if(!$item->is_fixed)
-                                            <form action="{{ route('cart.removeCart', $item->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
-                                            </form>
-                                        @else
-                                            <button class="btn btn-secondary" disabled>Pesanan Fixed</button>
-                                        @endif
-                                    </td>
+                                    @if(!session('checked_out_' . $item->id))
+                                        <form action="{{ route('cart.removeCart', $item->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
+                                        </form>
+                                    @else
+                                        <button class="btn btn-secondary" disabled>Pesanan Fixed</button>
+                                    @endif
+                                </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -81,6 +81,10 @@
                 <div class="d-flex justify-content-center mt-3">
                     <button id="whatsappOrder" class="btn btn-success">
                         Pesan Langsung Lewat WhatsApp
+                    </button>
+                    <a href="{{ route('order.histori') }}"></a>
+                    <button class="btn btn-primary">
+                        Lihat history pemesanan
                     </button>
                 </div>
             </div>
@@ -142,16 +146,30 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('updateCartForm').submit();
     });
 
-    // Tombol Checkout
     document.getElementById('checkoutButton').addEventListener('click', function (e) {
-        e.preventDefault(); // Mencegah form submit default
+    e.preventDefault(); // Mencegah form submit default
 
-        if (confirm('Apakah Anda yakin ingin checkout?')) {
-            // Kirim form checkout
+    Swal.fire({
+        title: 'Apakah Anda yakin ingin checkout?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Checkout',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Nonaktifkan tombol "Hapus" sebelum checkout dilakukan
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.disabled = true;
+                button.classList.remove('btn-danger'); // Menghapus warna merah
+                button.classList.add('btn-secondary'); // Mengubah warna ke abu-abu
+                button.innerText = 'Pesanan Fixed'; // Mengubah teks tombol
+            });
+
+            // Kirim form checkout setelah perubahan tombol
             document.getElementById('checkoutForm').submit();
         }
     });
-
+});
     // Tombol Pesan Lewat WhatsApp
     document.getElementById('whatsappOrder').addEventListener('click', function() {
         let phoneNumber = "6287831002289"; // Nomor WhatsApp tanpa + atau -
@@ -166,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
             message += `- ${product}\n  Harga: Rp ${parseInt(price).toLocaleString('id-ID')}\n  Jumlah: ${quantity}\n  Total: ${total}\n\n`;
         });
 
-        message += "Terima kasih telah berbelanja di sini! 😊";
+        message += "jika ada pesan tambahan : ";
 
         let encodedMessage = encodeURIComponent(message);
         let whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;

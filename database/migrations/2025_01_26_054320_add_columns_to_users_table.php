@@ -23,10 +23,6 @@ class AddColumnsToUsersTable extends Migration
                 $table->timestamp('email_verified_at')->nullable();
             }
 
-            if (!Schema::hasColumn('users', 'profile_picture')) {
-                $table->string('profile_picture')->nullable();
-            }
-
             if (!Schema::hasColumn('users', 'remember_token')) {
                 $table->rememberToken();
             }

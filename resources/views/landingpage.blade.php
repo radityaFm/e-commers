@@ -36,10 +36,10 @@
         display: none;
     }
 
-    .navbar-toggler {
+    /* .navbar-toggler {
         border: none;
         outline: none;
-    }
+    } */
     span.account {
         font-size: 1.2rem;
         font-weight: bold;
@@ -54,69 +54,11 @@
         transition: all 0.3s ease;
     }
 
-    .navbar-toggler-icon::before,
-    .navbar-toggler-icon::after {
-        content: '';
-        position: absolute;
-        width: 30px;
-        height: 3px;
-        background-color: #fff;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-    }
-
-    .navbar-toggler-icon::before {
-        top: -8px;
-    }
-
-    .navbar-toggler-icon::after {
-        top: 8px;
-    }
-
-    /* Animasi ketika hamburger dibuka */
-    .navbar-toggler.active .navbar-toggler-icon {
-        background-color: transparent;
-    }
-
-    .navbar-toggler.active .navbar-toggler-icon::before {
-        transform: rotate(45deg);
-        top: 0;
-    }
-
-    .navbar-toggler.active .navbar-toggler-icon::after {
-        transform: rotate(-45deg);
-        top: 0;
-    }
-
-    .dropdown-menu {
-        display: none;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s, visibility 0.3s;
-        animation: fadeIn 0.3s ease-in-out;
-        border: 1px solid #008C74;
-        border-radius: 5px;
-        background-color: white;
-    }
-
     /* Menampilkan dropdown saat hover pada dropdown */
     .hover-dropdown:hover .dropdown-menu {
         display: block;
         opacity: 1;
         visibility: visible;
-    }
-
-    /* Segitiga pada dropdown */
-    .dropdown-menu .dropdown-arrow {
-        position: absolute;
-        top: -5px;
-        left: 50%;
-        margin-left: -5px;
-        width: 0;
-        height: 0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-bottom: 5px solid white;
     }
 
     /* Gaya item dropdown */
@@ -361,7 +303,7 @@
         </div>
         @endauth
         @guest
-        <a href="{{ route('auth.login') }}" class="btn btn-outline-light btn-sm me-2">Login</a>
+        <a href="{{ route('login') }}" class="btn btn-outline-light btn-sm me-2">Login</a>
         <a href="{{ route('auth.register') }}" class="btn btn-light btn-sm">Daftar</a>
     @endguest
     @auth
@@ -435,15 +377,6 @@ const toggler = document.querySelector('.navbar-toggler');
 toggler.addEventListener('click', function () {
     // Toggle the 'active' class to switch the hamburger icon
     this.classList.toggle('active');
-    
-    // Optional: Ensure that after closing the navbar the icon resets to the initial state
-    const isActive = this.classList.contains('active');
-    if (!isActive) {
-        // Reset icon rotation when the navbar is closed
-        setTimeout(() => {
-            document.querySelector('.navbar-toggler-icon').style.transition = 'all 0.3s ease';
-        }, 300);
-    }
 });
 </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

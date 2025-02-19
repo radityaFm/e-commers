@@ -14,14 +14,11 @@ class UserMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     
-     public function handle(Request $request, Closure $next)
+     public function handle($request, Closure $next)
      {
-         // Cek apakah pengguna sudah login dan memiliki role 'user'
-         if (Auth::check() && Auth::user()->role === 'user') {
-             return $next($request);
+         if (!Auth::check()) {
+             return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
          }
- 
-         // Jika bukan user, redirect ke halaman admin atau tampilkan error
-         return redirect()->route('/')->with('error', 'Anda tidak memiliki akses ke halaman admin.');
+         return $next($request);
      }
 }
