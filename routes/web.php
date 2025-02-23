@@ -7,6 +7,7 @@ use App\Http\Controllers\addToCart;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 
 //  Route untuk landing page (bisa diakses tanpa login)
@@ -17,7 +18,7 @@ Route::get('/', [LandingPageController::class, 'index'])->name('/');
 Route::middleware(['guest'])->group(function(){
     Route::get('login', [AuthController::class, 'show'])->name('login');
     Route::post('auth.login', [AuthController::class, 'login'])->name('auth.login.submit');
-    Route::get('auth/register', [AuthController::class, 'showRegistrationForm'])->name('auth.register');
+    Route::get('auth.register', [AuthController::class, 'showRegistrationForm'])->name('auth.register');
     Route::post('auth.register', [AuthController::class, 'register'])->name('register.process');
 });
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
@@ -48,6 +49,14 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('order/histori', [OrderController::class, 'histori'])->name('order.histori');
 Route::post('order/histori', [OrderController::class, 'checkout'])->name('order.histori');
+Route::middleware(['auth'])->group(function () {
+    Route::get('order', [OrderController::class, 'index'])->name('order');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/order', [OrderController::class, 'index'])->name('order');
+});
+
 
 // Route::resource('transaction-items', TransactionItemController::class);
 // Route::middleware('auth')->group(function () {

@@ -8,11 +8,14 @@ use App\Models\OrderItem;
 
 class Order extends Model
 {
-    protected $fillable = [ 'user_id', 'status', 'grand_total_amount',];
+    protected $fillable = [ 'user_id', 'status',];
 
-    
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -21,8 +24,15 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
+    public function index()
+{
+    $orders = Order::all(); // Ambil semua pesanan
+    return view('order.index', compact('orders'));
+}
+
+public function show($orderId)
+{
+    $order = Order::findOrFail($orderId);
+    return view('order.show', compact('order'));
+}
 }

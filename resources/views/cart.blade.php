@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     @if(empty($cartItems))
-        <div class="text-center my-5">
+        <div class="text-center my-5 mt-5">
             <h3>Keranjang Anda kosong.</h3>
             <a href="{{ route('user.product') }}" class="btn btn-primary mt-3">Mulai Belanja</a>
         </div>

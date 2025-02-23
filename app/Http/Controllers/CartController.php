@@ -197,8 +197,8 @@ public function removeCart($id)
      {
          // Ambil cart milik user yang sedang login
          $cart = Cart::where('user_id', auth()->id())->first();
- 
-         if (!$cart || $cart->items->isEmpty()) {
+         $cartItems = Cart_item::where('cart_id', $cart->id)->get();
+         if (!$cart || $cartItems->isEmpty()) {
              return redirect()->route('cart')->with('error', 'Keranjang kosong!');
          }
  
@@ -206,11 +206,11 @@ public function removeCart($id)
          $order = Order::create([
              'user_id' => auth()->id(),
              'status' => 'completed', // Status selesai
-             'total' => $cart->items->sum(fn ($item) => $item->quantity * $item->product->price), // Hitung total harga
+             'total' => $cart->cartItems->sum(fn($item) => $item->quantity * $item->product->price), // Hitung total harga
          ]);
  
          // Pindahkan item dari cart ke order
-         foreach ($cart->items as $item) {
+         foreach ($cartItems as $item) {
              OrderItem::create([
                  'order_id' => $order->id,
                  'product_id' => $item->product_id,
@@ -223,14 +223,12 @@ public function removeCart($id)
              if ($product) {
                  $product->decrement('stock', $item->quantity);
              }
- 
-             // Tandai item sebagai checked out dalam session
-             session(['checked_out_' . $item->id => true]);
+             $item->delete();
          }
  
          // Hapus semua item dari cart
-         $cart->items()->delete();
+         $cart->cartItems()->delete();
  
          return redirect()->route('cart')->with('success', 'Checkout berhasil!');
      }
-}
+ } 

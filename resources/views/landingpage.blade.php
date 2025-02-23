@@ -78,35 +78,33 @@
     }
 
     /* Dropdown */
-    .dropdown-menu {
-        background-color: #f1f1f1;
-        border: none;
-    }
-
-    .dropdown-item {
-        padding: 15px 25px;
-        font-size: 16px;
-        background-color: transparent !important;
-        color: #333;
-    }
-
-    .dropdown-item:hover,
-    .dropdown-item:focus {
-        background-color: #f1f1f2 !important;
-        color: #008C74;
-    }
+/* Efek hover pada item dropdown */
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #f1f1f1 !important;
+    color: #008C74;
+}
 
     .hover-dropdown:hover .dropdown-menu {
-        display: block;
-        opacity: 1;
-        visibility: visible;
+    display: block;
+    opacity: 1;
+    visibility: visible;
     }
 
-    /* Animasi */
+    /* Mencegah dropdown menghilang saat berpindah ke dropdown-menu */
+    .hover-dropdown .dropdown-menu {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    /* Animasi fade-in */
     @keyframes fadeIn {
         0% { opacity: 0; }
         100% { opacity: 1; }
     }
+
 
     /* Styling untuk navbar row - lebih terang saat hover */
     .navbar-nav .nav-item:hover {
@@ -397,7 +395,6 @@ footer {
                 <li class="nav-item me-2 mx-4 ps-0 fs-5"><a class="nav-link fs-5" href="#aboutus">About us</a></li>
                 <li class="nav-item me-4 mx-3 ps-0 fs-5"><a class="nav-link fs-5" href="#product">Produk</a></li>
             </ul>
-</div>
         </div>
     </div>
 </nav>

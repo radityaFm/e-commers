@@ -15,39 +15,34 @@
 
 
 .navbar {
+    position: relative; /* Pastikan navbar memiliki posisi relatif */
     background-color: #222023;
-    background-image: black;
-    background-color: rgba(34, 32, 35, 0.8); /* Warna dengan transparansi */
-    backdrop-filter: blur(10px);
-    color: #fff;
-    padding: 20px 0;
 }
 
 .navbar-toggler {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     border: none;
     outline: none;
+    background: none;
+    padding: 5px;
 }
 
-.navbar-toggler-icon {
-    width: 30px;
-    height: 3px;
-    background-color: #fff;
-    border-radius: 5px;
-    position: relative;
-    transition: all 0.3s ease;
+.navbar-collapse {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #222023;
+    width: 100%; /* Agar rata dengan navbar */
+    padding: 0; /* Hilangkan padding agar sejajar */
+    margin: 0; /* Pastikan tidak ada margin */
+    border-radius: 0; /* Hilangkan border-radius agar sejajar */
 }
 
-.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
-    transform: rotate(45deg);
-}
-
-.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
-    transform: rotate(90deg);
-    top: 0;
-}
-
-.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
-    opacity: 0;
+.navbar-collapse.show {
+    display: block !important;
 }
 
         .gradient-custom {
@@ -177,12 +172,18 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-black">
+<nav class="navbar navbar-expand-lg navbar-dark ">
     <div class="container">
-        <a class="navbar-brand fs-5" href="#">Mbak G</a>
+        <a class="navbar-brand fs-4" href="#">Mbak G</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto mb-3">
+                <li class="nav-item me-2 mx-4 ps-0 fs-5"><a class="nav-link fs-5" href="#aboutus">About us</a></li>
+                <li class="nav-item me-4 mx-3 ps-0 fs-5"><a class="nav-link fs-5" href="#product">Produk</a></li>
+            </ul>
+        </div>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link fs-5" href="{{('/')}}">Go to Landingpage</a></li>
@@ -219,15 +220,11 @@
     @stack('scripts')
     @if(session('success'))
     <script>
-       document.addEventListener("DOMContentLoaded", function() {
-    const navbarToggler = document.querySelector('.navbar-toggler');
-    const navbarCollapse = document.querySelector('.navbar-collapse');
+const toggler = document.querySelector('.navbar-toggler');
 
-    navbarToggler.addEventListener('click', function() {
-        const isExpanded = navbarToggler.getAttribute('aria-expanded') === 'true';
-        navbarToggler.setAttribute('aria-expanded', !isExpanded);
-        navbarCollapse.style.display = isExpanded ? 'none' : 'block';
-    });
+toggler.addEventListener('click', function () {
+    // Toggle the 'active' class to switch the hamburger icon
+    this.classList.toggle('active');
 });
     </script>
     <script>

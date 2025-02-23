@@ -5,66 +5,54 @@
     <h1 class="my-4">Riwayat Pesanan</h1>
 
     @if($orders->isEmpty())
-        <div class="alert alert-info">
-            Anda belum memiliki pesanan.
-        </div>
+        <div class="alert alert-info">Anda belum memiliki pesanan.</div>
     @else
-    @foreach($orders as $order)
-    <div class="card mb-4">
-        <div class="card-header">
-            <h3>Pesanan #{{ $order->id }}</h3>
-            <p class="mb-0">
-                <strong>Status:</strong> 
-                <span class="badge 
-                    @if($order->status == 'completed') bg-success 
-                    @elseif($order->status == 'pending') bg-warning 
-                    @elseif($order->status == 'cancelled') bg-danger 
-                    @endif">
-                    {{ ucfirst($order->status) }}
-                </span>
-            </p>
-            <p class="mb-0">
-                <strong>Tanggal Pesanan:</strong> 
-                {{ $order->created_at->timezone('Asia/Jakarta')->format('d M Y H:i') }} 
-            </p>
-        </div>
-        <div class="card-body">
-            <h5>Item Pesanan:</h5>
-            <ul class="list-group mb-3">
-                @foreach($order->items as $item)
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <strong>{{ $item->product->name }}</strong>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                {{ $item->quantity }} x 
-                            </div>
-                            <div class="col-md-2 text-end">
-                                Rp {{ number_format($item->price, 0, ',', '.') }}
-                            </div>
-                            <div class="col-md-2 text-end">
-                                Rp {{ number_format($item->total_price, 0, ',', '.') }}
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-            <div class="text-end">
-                <h5>Total Pesanan: Rp {{ number_format($order->grand_total_amount, 0, ',', '.') }}</h5>
+        @foreach($orders as $order)
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Pesanan #{{ $order->id }}</h3>
+                    <p class="mb-0"><strong>Status:</strong> 
+                        <span class="badge 
+                            @if($order->status == 'completed') bg-success 
+                            @elseif($order->status == 'pending') bg-warning 
+                            @elseif($order->status == 'checkout') bg-primary 
+                            @endif">
+                            {{ ucfirst($order->status) }}
+                        </span>
+                    </p>
+                    <p class="mb-0"><strong>Tanggal Pesanan:</strong> 
+                        {{ $order->created_at->format('d M Y H:i') }} 
+                    </p>
+                </div>
+
+                <div class="card-body">
+                    <h5>Item Pesanan:</h5>
+                    <ul class="list-group">
+                        @foreach($order->items as $item)
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>{{ $item->product->name }} ({{ $item->quantity }}x)</span>
+                                <span>Rp{{ number_format($item->quantity * $item->price, 0, ',', '.') }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <div class="mt-3 text-end">
+                        <h5>Total: Rp{{ number_format($order->items->sum(fn($item) => $item->quantity * $item->price), 0, ',', '.') }}</h5>
+                    </div>
+                </div>
+
+                <div class="card-footer d-flex justify-content-start">
+                    <a href="{{ route('/') }}" class="btn btn-primary me-2">Kembali ke Home</a>
+                    <button class="btn btn-success whatsappOrder" data-order-id="{{ $order->id }}">
+                        Pesan Langsung Lewat WhatsApp
+                    </button>
+                </div>
             </div>
-            <div class="card-footer">
-                <a href="{{ route('/') }}" class="btn btn-primary">Kembali ke Home</a>
-                <button class="btn btn-success whatsappOrder" data-order-id="{{ $order->id }}">
-                    Pesan Langsung Lewat WhatsApp
-                </button>
-            </div>
-        </div>
-    </div>
-@endforeach
+        @endforeach
     @endif
 </div>
 @endsection
+
 
 @push('scripts')
 <script>
