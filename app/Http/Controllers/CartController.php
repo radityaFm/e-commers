@@ -41,10 +41,10 @@ public function addToCart(Request $request)
     // Validasi input
     $validated = $request->validate([
         'product_id' => 'required|exists:products,id',
-        'quantity' => 'required|integer|min:1',
+        'quantity' => 'required|integer',
     ]);
     $product = Product::where('id', $validated['product_id'])->first();
-    $totalPrice = $validated['quantity'] * $product->price;
+    $totalPrice = $product->price * $validated['quantity'];
     // Pastikan pengguna sudah login
     if (!Auth::check()) {
         return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu!');
@@ -175,15 +175,13 @@ public function removeCart($id)
 
         // Cek apakah keranjang kosong setelah penghapusan
         if ($cart->cartItems()->count() === 0) {
-            // Jika keranjang kosong, hapus keranjang (opsional)
             $cart->delete();
         }
 
         DB::commit();
-        return back()->with('success', 'Produk berhasil dihapus dari keranjang.');
+        return redirect()->route('cart')->with('success', 'Produk berhasil dihapus dari keranjang.');
     } catch (\Exception $e) {
         DB::rollBack();
-        // Log error untuk debugging
         \Log::error('Error removing cart item: ' . $e->getMessage());
         return back()->with('error', 'Terjadi kesalahan saat menghapus produk.');
     }

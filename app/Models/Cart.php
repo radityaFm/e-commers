@@ -1,22 +1,17 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-        protected $fillable = [
-             'user_id', 'is_fixed', 'expires_at'
-        ];
-    
-        public function product()
-        {
-            return $this->belongsTo(Product::class);
-        }
-    public function items()
+    protected $fillable = [
+        'user_id', 'is_fixed', 'expires_at',
+    ];
+
+    public function product()
     {
-        return $this->hasMany(Cart_item::class);
+        return $this->belongsTo(Product::class);
     }
     public function cartItems()
     {
@@ -31,7 +26,7 @@ class Cart extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'cart_product')->withPivot('quantity');
-    }    
+    }
     // Method untuk menghitung total harga
     public function getTotal()
     {
