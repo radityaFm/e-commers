@@ -9,11 +9,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItem;
 use App\Http\Controllers\addToCart;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductTransactionController;
 
 
 //  Route untuk landing page (bisa diakses tanpa login)
 Route::get('/', [LandingPageController::class, 'index'])->name('/');
+// Route::get('admin', [AuthController::class, 'login'])->name('adminPanelProvider');
 
 // Route untuk auth (login, register, logout)
 Route::middleware(['guest'])->group(function(){
@@ -43,13 +43,16 @@ Route::get('user.product', [ProductController::class, 'show'])->name('user.produ
 Route::middleware(['auth'])->group(function () {
     Route::post('/user/product/add-to-cart', [CartController::class, 'addToCart'])->name('user.cart.add');
     Route::get('purchase/{id}/{quantity}', [ProductController::class, 'purchase'])->name('user.purchase');
+    Route::post('/cart/updateCart/{id}', [CartController::class, 'updateCart'])->name('cart.updateCart');
     Route::get('cart', [CartController::class, 'viewCart'])->name('cart');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeCart'])->name('cart.removeCart');
     Route::post('cart.checkout', [CartController::class, 'checkout'])->name('checkout');
 });
 
-Route::get('order.histori', [OrderController::class, 'orderHistory'])->name('order.histori');
-Route::post('order/store', [OrderController::class, 'store'])->name('order.store');
+Route::get('order.histori', [OrderController::class, 'histori'])->name('order.histori');
+Route::post('order.histori', [OrderController::class, 'checkout'])->name('order.histori');
+
+// Route::resource('transaction-items', TransactionItemController::class);
 // Route::middleware('auth')->group(function () {
 //     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 //     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');

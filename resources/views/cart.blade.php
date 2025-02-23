@@ -35,37 +35,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($cartItems as $item)
-                                <tr>
-                                    <td>{{ $item->product ? $item->product->name : 'Produk tidak ditemukan' }}</td>
-                                    <td>Rp <span class="unit-price" data-price="{{ optional($item->product)->price }}">
-                                        {{ number_format(optional($item->product)->price ?? 0, 0, ',', '.') }}
-                                    </span></td>
-                                    <td>
-                                        <input type="number" class="quantity-input form-control" 
-                                            name="quantity" 
-                                            id="quantity-{{ $item->id }}" 
-                                            value="{{ $item->quantity }}" 
-                                            min="1" 
-                                            max="{{ optional($item->product)->stock ?? 0 }}" 
-                                            onchange="updateTotalPrice({{ $item->id }})">
-                                    </td>
-                                    <td>Rp <span class="total-price" id="total-price-{{ $item->id }}">
-                                        {{ number_format(optional($item->product)->price * $item->quantity ?? 0, 0, ',', '.') }}
-                                    </span></td>
-                                    <td>
-                                    @if(!session('checked_out_' . $item->id))
-                                        <form action="{{ route('cart.removeCart', $item->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
-                                        </form>
-                                    @else
-                                        <button class="btn btn-secondary" disabled>Pesanan Fixed</button>
-                                    @endif
+                        @foreach($cartItems as $item)
+                            <tr>
+                                <td>{{ $item->product ? $item->product->name : 'Produk tidak ditemukan' }}</td>
+                                <td>Rp <span class="unit-price" data-price="{{ optional($item->product)->price }}">
+                                    {{ number_format(optional($item->product)->price ?? 0, 0, ',', '.') }}
+                                </span></td>
+                                <td>
+                                    <input type="number" class="quantity-input form-control" 
+                                        name="quantity" 
+                                        id="quantity-{{ $item->id }}" 
+                                        value="{{ $item->quantity }}" 
+                                        min="1" 
+                                        max="{{ optional($item->product)->stock }}" 
+                                        onchange="updateCart({{ $item->id }})">
                                 </td>
-                                </tr>
-                            @endforeach
+                                <td>Rp <span class="total-price" id="total-price-{{ $item->id }}">
+                                    {{ number_format($item->total_price ?? 0, 0, ',', '.') }}
+                                </span></td>
+                                <td>
+                                    <form action="{{ route('cart.removeCart', $item->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-delete">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -94,6 +90,42 @@
 
 @section('scripts')
 <script>
+function updateCart(itemId) {
+    const quantityInput = document.getElementById(`quantity-${itemId}`);
+    const unitPriceElement = document.querySelector(`#quantity-${itemId}`).closest('tr').querySelector('.unit-price');
+    const totalPriceElement = document.getElementById(`total-price-${itemId}`);
+
+    const unitPrice = parseFloat(unitPriceElement.getAttribute('data-price'));
+    const quantity = parseInt(quantityInput.value);
+
+    const totalPrice = unitPrice * quantity;
+
+    // Update tampilan total price
+    totalPriceElement.textContent = totalPrice.toLocaleString('id-ID', { maximumFractionDigits: 0 });
+
+    // Kirim permintaan AJAX untuk memperbarui quantity dan total price di server
+    fetch(`cart.updateCart/${itemId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            quantity: quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Jumlah dan harga total diperbarui.');
+        } else {
+            console.error('Gagal memperbarui jumlah dan harga total.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 document.addEventListener('DOMContentLoaded', function() {
     let isEditing = false;
     let originalQuantities = {};

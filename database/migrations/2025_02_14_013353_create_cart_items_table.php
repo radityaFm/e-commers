@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->foreignId('cart_id')->constrained();
             $table->foreignId('product_id')->constrained();
             $table->integer('quantity');
+            $table->decimal('total_price', 10, 2);
             $table->timestamps();
             
             // Tambahkan unique constraint jika diperlukan
@@ -19,5 +20,11 @@ return new class extends Migration {
     }
     
     public function down(): void {
-    }
+        Schema::table('cart_items', function (Blueprint $table) {
+            $table->dropForeign(['cart_id']);
+            $table->dropForeign(['product_id']);
+        });
+    
+        Schema::dropIfExists('cart_items');
+    }   
 };

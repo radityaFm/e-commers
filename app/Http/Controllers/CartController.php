@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cart;
-use App\Models\CartItem;
+use App\Models\Cart_item;
 use App\Models\Product;
 use App\Models\OrderItem;
 use App\Models\Order; 
@@ -63,7 +63,7 @@ public function addToCart(Request $request)
     ]);
 
     // Cek apakah produk sudah ada di keranjang
-    $cartItem = CartItem::where('cart_id', $cart->id)
+    $cartItem = Cart_item::where('cart_id', $cart->id)
         ->where('product_id', $validated['product_id'])
         ->first();
 
@@ -81,7 +81,7 @@ public function addToCart(Request $request)
         ]);
     } else {
         // Jika produk belum ada, tambahkan sebagai item baru
-        CartItem::create([
+        Cart_item::create([
             'cart_id' => $cart->id,
             'product_id' => $validated['product_id'],
             'quantity' => $validated['quantity'],
@@ -93,14 +93,17 @@ public function addToCart(Request $request)
 }
 public function updateCart(Request $request, $id)
 {
+    // Validasi input quantity
     $request->validate([
         'quantity' => 'required|integer|min:1'
     ]);
 
-    $cartItem = CartItem::findOrFail($id); // Jika tidak ditemukan, otomatis 404
+    // Cari item keranjang berdasarkan ID
+    $cartItem = Cart_item::findOrFail($id); // Jika tidak ditemukan, otomatis 404
 
+    // Pastikan produk terkait ada
     if (!$cartItem->product) {
-        return back()->with('error', 'Produk tidak ditemukan.');
+        return response()->json(['success' => false, 'message' => 'Produk tidak ditemukan.']);
     }
 
     $product = $cartItem->product;
@@ -108,23 +111,44 @@ public function updateCart(Request $request, $id)
     $newQuantity = $request->quantity;
     $difference = $newQuantity - $oldQuantity;
 
-    // Jika jumlah bertambah, cek stok tersedia
-    if ($difference > 0) {
-        if ($product->stock < $difference) {
-            return back()->with('error', 'Stok tidak mencukupi.');
+    // Jika jumlah berubah
+    if ($difference != 0) {
+        // Jika jumlah bertambah, cek stok tersedia
+        if ($difference > 0) {
+            if ($product->stock < $difference) {
+                return response()->json(['success' => false, 'message' => 'Stok tidak mencukupi.']);
+            }
+            $product->decrement('stock', $difference); // Kurangi stok
+        } 
+        // Jika jumlah berkurang, kembalikan stok
+        elseif ($difference < 0) {
+            $product->increment('stock', abs($difference)); // Tambahkan stok
         }
-        $product->decrement('stock', $difference);
-    } 
-    // Jika jumlah berkurang, kembalikan stok
-    elseif ($difference < 0) {
-        $product->increment('stock', abs($difference));
+
+        // Hitung ulang harga total
+        $unitPrice = $product->price;
+        if ($unitPrice <= 0) {
+            return response()->json(['success' => false, 'message' => 'Harga produk tidak valid.']);
+        }
+        $totalPrice = $unitPrice * $newQuantity;
+
+        // Update quantity dan total price di cart item
+        $cartItem->update([
+            'quantity' => $newQuantity,
+            'total_price' => $totalPrice // Pastikan kolom 'total_price' ada di tabel cart_items
+        ]);
+
+        // Update order_items yang terkait dengan cart_item ini
+        $cartItem->orderItems()->each(function ($orderItem) use ($newQuantity, $unitPrice, $totalPrice) {
+            $orderItem->update([
+                'quantity' => $newQuantity,
+                'price' => $unitPrice,
+            ]);
+        });
     }
 
-    $cartItem->update(['quantity' => $newQuantity]);
-
-    return back()->with('success', 'Jumlah produk diperbarui.');
+    return response()->json(['success' => true, 'message' => 'Jumlah produk diperbarui.']);
 }
-    
 public function removeCart($id)
 {
     try {
@@ -139,19 +163,13 @@ public function removeCart($id)
         }
 
         // Cari item dalam keranjang berdasarkan ID
-        $cartItem = CartItem::where('cart_id', $cart->id)
+        $cartItem = Cart_item::where('cart_id', $cart->id)
             ->where('id', $id) // ID item keranjang, bukan ID produk
             ->first();
 
         if (!$cartItem) {
             DB::rollBack();
             return back()->with('error', 'Item tidak ditemukan dalam keranjang.');
-        }
-
-        // Kembalikan stok produk
-        $product = Product::find($cartItem->product_id);
-        if ($product) {
-            $product->increment('stock', $cartItem->quantity);
         }
 
         // Hapus item dari keranjang
@@ -176,39 +194,9 @@ public function removeCart($id)
     public function viewCart()
     {
         $cart = Cart::where('user_id', auth()->id())->first();
-        $cartItems = $cart ? CartItem::where('cart_id', $cart->id)->with('product')->get() : [];
+        $cartItems = $cart ? Cart_item::where('cart_id', $cart->id)->with('product')->get() : [];
 
         return view('cart', compact('cartItems'));
-    }
-
-    // Checkout - Simpan perubahan stock sebelum checkout
-    public function update(Request $request)
-    {
-        $validated = $request->validate([
-            'updatedQuantities' => 'required|array',
-            'updatedQuantities.*' => 'required|integer|min:1',
-        ]);
-
-        $cart = Cart::where('user_id', auth()->id())->first();
-        if (!$cart) {
-            return response()->json(['error' => 'Keranjang tidak ditemukan'], 404);
-        }
-
-        foreach ($validated['updatedQuantities'] as $productId => $quantity) {
-            $cartItem = CartItem::where('cart_id', $cart->id)->where('product_id', $productId)->first();
-
-            if ($cartItem) {
-                $cartItem->update(['quantity' => $quantity]);
-            } else {
-                CartItem::create([
-                    'cart_id' => $cart->id,
-                    'product_id' => $productId,
-                    'quantity' => $quantity,
-                ]);
-            }
-        }
-
-        return response()->json(['success' => true]);
     }
      // Proses checkout
      public function checkout(Request $request)

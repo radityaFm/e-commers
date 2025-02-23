@@ -6,8 +6,7 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\User;
 use App\Models\Product;
-use App\Models\ProductTransaction; 
-
+use App\Models\Order; // Pastikan model Order di-import
 
 class StatsOverview extends BaseWidget
 {   
@@ -15,10 +14,14 @@ class StatsOverview extends BaseWidget
     {
         // Count all users
         $totalUsers = User::count();
+        
         // Count all products
         $totalProducts = Product::count();
-        // Count all orders
-        $totalRevenue = ProductTransaction::sum('grand_total_amount');
+        
+        // Hitung total revenue dari model Order
+        $totalRevenue = Order::sum('status'); 
+        
+        // Format total revenue
         $formattedRevenue = 'IDR ' . number_format($totalRevenue, 0, ',', '.');
 
         return [
@@ -47,5 +50,3 @@ class StatsOverview extends BaseWidget
         return 2;  
     }
 }
-
-

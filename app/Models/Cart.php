@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
         protected $fillable = [
-             'user_id', 'product_id', 'quantity', 'is_fixed', 'expires_at'
+             'user_id', 'is_fixed', 'expires_at'
         ];
     
         public function product()

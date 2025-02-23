@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Gate;
+use App\Models\Order;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,11 +22,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+    
         // Definisikan gate untuk memeriksa role admin
         Gate::define('access-filament', function ($user) {
             return $user->role === 'admin';
         });
-
+    
         // Terapkan gate ke Filament
         Filament::serving(function () {
             if (! Gate::allows('access-filament')) {

@@ -9,63 +9,66 @@
             Anda belum memiliki pesanan.
         </div>
     @else
-        @foreach($orders as $order)
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h3>Pesanan #{{ $order->id }}</h3>
-                    <p class="mb-0">
-                        <strong>Status:</strong> 
-                        <span class="badge 
-                            @if($order->status == 'completed') bg-success 
-                            @elseif($order->status == 'pending') bg-warning 
-                            @elseif($order->status == 'cancelled') bg-danger 
-                            @endif">
-                            {{ ucfirst($order->status) }}
-                        </span>
-                    </p>
-                    <p class="mb-0">
-                        <strong>Tanggal Pesanan:</strong> 
-                        {{ $order->created_at->timezone('Asia/Jakarta')->format('d M Y H:i') }} 
-                    </p>
-                </div>
-                <div class="card-body">
-                    <h5>Item Pesanan:</h5>
-                    <ul class="list-group mb-3">
-                        @foreach($order->items as $item)
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <strong>{{ $item->product->name }}</strong>
-                                    </div>
-                                    <div class="col-md-3 text-end">
-                                        {{ $item->quantity }} x 
-                                    </div>
-                                    <div class="col-md-3 text-end">
-                                        Rp {{ number_format($item->price, 0, ',', '.') }}
-                                    </div>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <div class="text-end">
-                        <h5>Total Pesanan: Rp {{ number_format($order->total, 0, ',', '.') }}</h5>
-                    </div>
-                    <div class="card-footer">
-                    <a href="{{ route('/', $order->id) }}" class="btn btn-primary">Kembali ke Home</a>
-                    
-                    <!-- Tombol WhatsApp -->
-                    <button class="btn btn-success whatsappOrder" data-order-id="{{ $order->id }}">
-                        Pesan Langsung Lewat WhatsApp
-                    </button>
-                </div>
-                </div>
+    @foreach($orders as $order)
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Pesanan #{{ $order->id }}</h3>
+            <p class="mb-0">
+                <strong>Status:</strong> 
+                <span class="badge 
+                    @if($order->status == 'completed') bg-success 
+                    @elseif($order->status == 'pending') bg-warning 
+                    @elseif($order->status == 'cancelled') bg-danger 
+                    @endif">
+                    {{ ucfirst($order->status) }}
+                </span>
+            </p>
+            <p class="mb-0">
+                <strong>Tanggal Pesanan:</strong> 
+                {{ $order->created_at->timezone('Asia/Jakarta')->format('d M Y H:i') }} 
+            </p>
+        </div>
+        <div class="card-body">
+            <h5>Item Pesanan:</h5>
+            <ul class="list-group mb-3">
+                @foreach($order->items as $item)
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>{{ $item->product->name }}</strong>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                {{ $item->quantity }} x 
+                            </div>
+                            <div class="col-md-2 text-end">
+                                Rp {{ number_format($item->price, 0, ',', '.') }}
+                            </div>
+                            <div class="col-md-2 text-end">
+                                Rp {{ number_format($item->total_price, 0, ',', '.') }}
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+            <div class="text-end">
+                <h5>Total Pesanan: Rp {{ number_format($order->grand_total_amount, 0, ',', '.') }}</h5>
             </div>
-        @endforeach
+            <div class="card-footer">
+                <a href="{{ route('/') }}" class="btn btn-primary">Kembali ke Home</a>
+                <button class="btn btn-success whatsappOrder" data-order-id="{{ $order->id }}">
+                    Pesan Langsung Lewat WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+@endforeach
     @endif
 </div>
+@endsection
+
 @push('scripts')
 <script>
- document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.whatsappOrder').forEach(button => {
         button.addEventListener('click', function() {
             let orderId = this.getAttribute('data-order-id');
@@ -85,26 +88,24 @@
                 let product = productElement ? productElement.innerText.trim() : 'Produk tidak ditemukan';
 
                 // Ambil semua elemen dengan class .col-md-3.text-end
-                let values = item.querySelectorAll('.col-md-3.text-end');
+                let values = item.querySelectorAll('.col-md-2.text-end');
 
-                // Pastikan ada setidaknya dua elemen (quantity dan price)
-                if (values.length >= 2) {
+                // Pastikan ada setidaknya tiga elemen (quantity, price, total_price)
+                if (values.length >= 3) {
                     let quantity = values[0].innerText.trim().replace(/\D/g, ''); // Hanya angka
                     let price = values[1].innerText.trim().replace(/Rp\s?|[^0-9]/g, ''); // Hapus "Rp" dan non-angka
+                    let totalPrice = values[2].innerText.trim().replace(/Rp\s?|[^0-9]/g, ''); // Hapus "Rp" dan non-angka
 
-                    // Pastikan price dan quantity adalah angka
+                    // Pastikan price, quantity, dan totalPrice adalah angka
                     price = price ? parseInt(price, 10) : 0;
                     quantity = quantity ? parseInt(quantity, 10) : 0;
-
-                    // Hitung total harga produk
-                    let totalProductPrice = price * quantity;
-                    totalPriceSum += totalProductPrice; // Tambahkan ke total harga keseluruhan
+                    totalPrice = totalPrice ? parseInt(totalPrice, 10) : 0;
 
                     // Tambahkan detail produk ke pesan
                     message += `Produk: ${product}\n`;
                     message += `Harga: Rp ${price.toLocaleString('id-ID')}\n`;
                     message += `Jumlah: ${quantity}\n`;
-                    message += `Subtotal: Rp ${totalProductPrice.toLocaleString('id-ID')}\n`;
+                    message += `Subtotal: Rp ${totalPrice.toLocaleString('id-ID')}\n`;
                     message += `-----------------------------\n`;
                 }
             });
@@ -112,17 +113,10 @@
             // Ambil elemen total harga di dalam card
             let totalPriceElement = orderCard.querySelector('.text-end h5');
 
-            // Cek apakah elemen ditemukan
-            if (!totalPriceElement) {
-                console.error("Elemen total harga (h5) tidak ditemukan dalam .text-end");
-            } else {
-                console.log("Elemen total harga ditemukan:", totalPriceElement.innerText);
-            }
-
             // Ambil teks total harga dan bersihkan angka
             let totalPriceText = totalPriceElement ? totalPriceElement.innerText.trim().replace(/\D/g, '') : '0';
 
-            // Konversi ke angka jika valid, jika tidak, gunakan hasil perhitungan manual
+            // Konversi ke angka jika valid
             let totalPrice = totalPriceText ? parseInt(totalPriceText, 10) : totalPriceSum;
 
             // Tambahkan total harga ke pesan
@@ -141,4 +135,3 @@
 });
 </script>
 @endpush
-@endsection

@@ -72,10 +72,6 @@ class User extends Authenticatable
         $this->attributes['slug'] = \Str::slug($value);
     }
 
-    public function productTransaction(): HasMany
-    {
-        return $this->hasMany(ProductTransaction::class);
-    }
     public function products()
     {
         return $this->hasMany(Product::class);

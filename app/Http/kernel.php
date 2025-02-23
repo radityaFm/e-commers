@@ -41,6 +41,10 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Illuminate\Session\Middleware\AuthenticateSession::class,
         ],
+        'filament' => [
+            \Filament\Http\Middleware\Authenticate::class,
+            \Filament\Http\Middleware\DisableBladeIconComponents::class,
+        ],
 
         'api' => [
             'throttle:api',
@@ -61,7 +65,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\GuestMiddleware::class,
         'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
         'user' => \App\Http\Middleware\UserMiddleware::class,
-        'checkrole' => \App\Http\Middleware\CheckRole::class, // ✅ Pastikan ini ada!
+        'checkrole' => \App\Http\Middleware\CheckRole::class,
     ];
     
 
@@ -80,4 +84,5 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\EncryptCookies::class,
         \App\Http\Middleware\CheckAdmin::class,  // Tambahkan middleware admin jika ingin di prioritaskan
     ];
+    
 }
