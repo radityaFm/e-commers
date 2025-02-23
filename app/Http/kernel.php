@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \App\Http\Middleware\VerifyCsrfToken::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\TrustHosts::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,

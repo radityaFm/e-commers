@@ -16,11 +16,11 @@ class Cart extends Model
         }
     public function items()
     {
-        return $this->hasMany(CartItem::class);
+        return $this->hasMany(Cart_item::class);
     }
     public function cartItems()
     {
-        return $this->hasMany(CartItem::class);
+        return $this->hasMany(Cart_item::class);
     }
 
     public function user()

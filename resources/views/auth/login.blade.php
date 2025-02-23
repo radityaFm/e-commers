@@ -25,7 +25,6 @@
         <div class="card shadow" style="width: auto;">
             <div class="card-body">
                 <h4 class="card-title text-center mb-4">Login</h4>
-
                 @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
@@ -42,6 +41,7 @@
 
                 <form action="{{ route('auth.login.submit') }}" method="POST">
                     @csrf
+                    @method('POST')
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
