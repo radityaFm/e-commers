@@ -1,15 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Cart_item;
 use App\Http\Controllers\addToCart;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
 //  Route untuk landing page (bisa diakses tanpa login)
 Route::get('/', [LandingPageController::class, 'index'])->name('/');
@@ -23,7 +21,6 @@ Route::middleware(['guest'])->group(function(){
     Route::post('auth.register', [AuthController::class, 'register'])->name('register.process');
 });
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-
 
 // Route untuk profile (harus login)
 Route::middleware(['auth'])->group(function () {
@@ -58,5 +55,3 @@ Route::post('order/histori', [OrderController::class, 'checkout'])->name('order.
 //     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 //     Route::delete('/cart/{id}', [CartController::class, 'removeCart'])->name('cart.removeCart');
 // });
-
-

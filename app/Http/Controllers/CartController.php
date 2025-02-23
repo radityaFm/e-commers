@@ -43,14 +43,13 @@ public function addToCart(Request $request)
         'product_id' => 'required|exists:products,id',
         'quantity' => 'required|integer|min:1',
     ]);
-
+    $product = Product::where('id', $validated['product_id'])->first();
+    $totalPrice = $validated['quantity'] * $product->price;
     // Pastikan pengguna sudah login
     if (!Auth::check()) {
         return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu!');
     }
-
     // Ambil data produk
-    $product = Product::find($validated['product_id']);
 
     // Cek stok produk
     if ($product->stock < $validated['quantity']) {
@@ -85,6 +84,7 @@ public function addToCart(Request $request)
             'cart_id' => $cart->id,
             'product_id' => $validated['product_id'],
             'quantity' => $validated['quantity'],
+            'total_price' => $totalPrice
         ]);
     }
 
@@ -157,15 +157,13 @@ public function removeCart($id)
         // Cari keranjang pengguna
         $cart = Cart::where('user_id', auth()->id())->first();
 
-        if (!$cart) {
-            DB::rollBack();
-            return back()->with('error', 'Keranjang tidak ditemukan.');
-        }
+        // if (!$cart) {
+        //     DB::rollBack();
+        //     return back()->with('error', 'Keranjang tidak ditemukan.');
+        // }
 
         // Cari item dalam keranjang berdasarkan ID
-        $cartItem = Cart_item::where('cart_id', $cart->id)
-            ->where('id', $id) // ID item keranjang, bukan ID produk
-            ->first();
+        $cartItem = Cart_item::where('id', $id)->first();
 
         if (!$cartItem) {
             DB::rollBack();

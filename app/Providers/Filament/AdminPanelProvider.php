@@ -62,10 +62,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->plugins([
-                FilamentBackgroundsPlugin::make()
-                    ->showAttribution(false),
             ]);
     }    
 }

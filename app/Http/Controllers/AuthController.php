@@ -19,7 +19,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string|min:5',
+            'password' => 'required|string|min:3',
         ]);
     
         $user = User::where('email', $request->email)->first();
@@ -29,8 +29,6 @@ class AuthController extends Controller
         }
     
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $request->session()->regenerate();
-    
             // Cek jika login dari Filament (admin panel)
             if ($request->is('admin/*') || $request->is('admin')) {
                 if ($user->role !== 'admin') {
@@ -48,7 +46,7 @@ class AuthController extends Controller
                 return redirect()->route('/')->with('success', 'Login berhasil! Selamat datang Admin');
             }
         } else {
-            return redirect()->route('auth.login')->with('error', 'Email atau password salah.')->withInput();
+            return redirect()->route('login')->with('error', 'Email atau password salah.')->withInput();
         }
     }
 
