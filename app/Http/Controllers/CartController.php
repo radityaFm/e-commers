@@ -27,7 +27,7 @@ class CartController extends Controller
         ]);
     }
 
-    $cartItems = CartItem::where('cart_id', $cart->id)
+    $cartItems = Cart_item::where('cart_id', $cart->id)
                          ->with('product')
                          ->get();
 
