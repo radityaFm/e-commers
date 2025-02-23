@@ -154,36 +154,32 @@ public function removeCart($id)
     try {
         DB::beginTransaction();
 
-        // Cari keranjang pengguna
+        if (!auth()->check()) {
+            return back()->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
         $cart = Cart::where('user_id', auth()->id())->first();
+        if (!$cart) {
+            DB::rollBack();
+            return back()->with('error', 'Keranjang tidak ditemukan.');
+        }
 
-        // if (!$cart) {
-        //     DB::rollBack();
-        //     return back()->with('error', 'Keranjang tidak ditemukan.');
-        // }
-
-        // Cari item dalam keranjang berdasarkan ID
         $cartItem = Cart_item::where('id', $id)->first();
-
         if (!$cartItem) {
             DB::rollBack();
             return back()->with('error', 'Item tidak ditemukan dalam keranjang.');
         }
 
-        // Hapus item dari keranjang
         $cartItem->delete();
 
-        // Cek apakah keranjang kosong setelah penghapusan
-        if ($cart->cartItems()->count() === 0) {
-            // Jika keranjang kosong, hapus keranjang (opsional)
-            $cart->delete();
-        }
+        // if ($cart->cartItems()->count() === 0) {
+        //     $cart->delete();
+        // }
 
         DB::commit();
-        return back()->with('success', 'Produk berhasil dihapus dari keranjang.');
+        return redirect()->route('cart')->with('success', 'sukses delete');
     } catch (\Exception $e) {
         DB::rollBack();
-        // Log error untuk debugging
         \Log::error('Error removing cart item: ' . $e->getMessage());
         return back()->with('error', 'Terjadi kesalahan saat menghapus produk.');
     }
