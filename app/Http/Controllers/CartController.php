@@ -177,7 +177,7 @@ public function removeCart($id)
         // }
 
         DB::commit();
-        return redirect()->route('cart')->with('success', 'sukses delete');
+        return redirect()->route('cart')->with('success', 'sukses delete pesanan');
     } catch (\Exception $e) {
         DB::rollBack();
         \Log::error('Error removing cart item: ' . $e->getMessage());
@@ -205,7 +205,7 @@ public function removeCart($id)
          // Buat order baru
          $order = Order::create([
              'user_id' => auth()->id(),
-             'status' => 'completed', // Status selesai
+             'status' => 'pending', // Status selesai
              'total' => $cart->cartItems->sum(fn($item) => $item->quantity * $item->product->price), // Hitung total harga
          ]);
  

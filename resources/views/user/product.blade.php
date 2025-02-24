@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container py-3"> <!-- Menambahkan padding atas dan bawah -->
-    <h1 class="text-center mb-5 mt-5">Daftar Produk</h1>
+    <h1 class="text-center mb-5 mt-5 py-4">Daftar Produk</h1>
 
     <!-- Tampilkan pesan error -->
     @if (session('error'))

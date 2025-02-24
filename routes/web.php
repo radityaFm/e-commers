@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OtpController;
 
 //  Route untuk landing page (bisa diakses tanpa login)
 Route::get('/', [LandingPageController::class, 'index'])->name('/');
@@ -55,7 +56,12 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/order', [OrderController::class, 'index'])->name('order');
+    Route::post('/order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
+    Route::delete('/order/destroy/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
 });
+
+Route::post('/send-otp', [OtpController::class, 'sendOtp']);
+Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
 
 
 // Route::resource('transaction-items', TransactionItemController::class);

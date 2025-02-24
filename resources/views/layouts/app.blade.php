@@ -9,124 +9,106 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     @yield('styles')
     <style>
-        main {
-    margin-top: 80px; /* Sesuaikan dengan tinggi navbar */
-}
-
-
-.navbar {
-    position: relative; /* Pastikan navbar memiliki posisi relatif */
-    background-color: #222023;
-}
-
-.navbar-toggler {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    outline: none;
-    background: none;
-    padding: 5px;
-}
-
-.navbar-collapse {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background-color: #222023;
-    width: 100%; /* Agar rata dengan navbar */
-    padding: 0; /* Hilangkan padding agar sejajar */
-    margin: 0; /* Pastikan tidak ada margin */
-    border-radius: 0; /* Hilangkan border-radius agar sejajar */
-}
-
-.navbar-collapse.show {
-    display: block !important;
-}
-
-        .gradient-custom {
-            background: linear-gradient(to bottom, #6a11cb, #2575fc);
+     main {
+            margin-top: 80px; /* Sesuaikan dengan tinggi navbar */
         }
 
-        .card {
-            border: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-outline-light:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Efek hover untuk teks dalam dropdown */
-        .dropdown-menu {
-    display: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    position: absolute;
-    right: 0;
-    left: auto;
-    min-width: 200px; /* Lebar minimum dropdown */
-}
-
-/* Menampilkan dropdown saat hover */
-.hover-dropdown:hover .dropdown-menu {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Gaya item dropdown */
-.dropdown-item {
-    padding: 10px 20px;
-    font-size: 14px;
-    background-color: transparent !important;
-    color: #333;
-}
-
-/* Efek hover pada item dropdown */
-.dropdown-item:hover,
-.dropdown-item:focus {
-    background-color: #f1f1f1 !important;
-    color: #008C74;
-}
-
-    .hover-dropdown:hover .dropdown-menu {
-    display: block;
-    opacity: 1;
-    visibility: visible;
+        .navbar {
+        background-color: #222023;
     }
 
-    /* Mencegah dropdown menghilang saat berpindah ke dropdown-menu */
-    .hover-dropdown .dropdown-menu {
-        display: none;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+    .navbar-toggler {
+        border: none;
+        outline: none;
+        background: none;
+        padding: 5px;
     }
-    
-    /* Animasi fade-in */
-    @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
+
+    .navbar-collapse {
+        background-color: #222023;
     }
+
+    .dropdown-menu {
+    position: absolute;
+    right: 0; /* Selalu di pojok kanan */
+    right: auto !important; /* Pastikan tidak ada pengaturan left yang mengganggu */
+    min-width: 200px;
+    margin-top: 0.5rem; /* Jarak antara tombol dropdown dan menu */
+    transform: translateX(0); /* Pastikan tidak ada pergeseran */
+}
+
+.nav-item.dropdown {
+    position: relative; /* Agar dropdown tetap mengikuti parent */
+}
+
+    .dropdown-item {
+        padding: 10px 20px;
+        font-size: 14px;
+        background-color: transparent !important;
+        color: #333;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: #f1f1f1 !important;
+        display: block;
+    }
+    .dropdown-menu a.dropdown-item:hover {
+    color: green !important;
+}
+
+/* Untuk Logout (button) */
+.dropdown-menu button.dropdown-item:hover {
+    color: red !important;
+}
+
+
+        .keranjang-container {
+            margin-top: 50%;
+        }
+
+        @keyframes hoverEffect {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+        box-shadow: none;
+    }
+    100% {
+        transform: translateY(-5px); /* sedikit naik */
+        opacity: 1;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+    border: 1px solid transparent; /* Border awal transparan */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Sedikit naik */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Efek bayangan dengan blur lebih */
+    border: 1px solid rgba(0, 0, 0, 0.2); /* Border yang menonjol */
+}
+
 
             /* Mengatur lebar dropdown berdasarkan ukuran layar */
         @media (max-width: 768px) {
             .dropdown-menu {
-        width: 25%;
-        min-width: auto !important;
+                width: 50; /* Dropdown mengambil lebar penuh pada layar kecil */
+                min-width: auto;
+                position: static; /* Dropdown akan mengikuti alur dokumen */
         }
 
         .col-md-4 .card {
             border-radius: 12px !important;
         }
+        .dropdown-menu .dropdown-item,
+    .dropdown-menu form button {
+        width: 50% !important; /* Paksa tombol hanya 50% */
+        text-align: left; /* Rata kiri */
+        display: inline-block; /* Pastikan tidak full width */
+    }
         }
 
         @media (max-width: 425px) {
@@ -146,7 +128,7 @@
                 width: 60%;
             }
             .dropdown-menu {
-        width: 100%; /* Dropdown mengambil lebar penuh pada layar kecil */
+        width: 4%; /* Dropdown mengambil lebar penuh pada layar kecil */
         min-width: auto;
         position: static; /* Dropdown akan mengikuti alur dokumen */
     }
@@ -172,28 +154,22 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark ">
-    <div class="container">
-        <a class="navbar-brand fs-4" href="#">Mbak G</a>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container pt-3 pb-3">
+        <a class="navbar-brand fs-4">Mbak G</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto mb-3">
-                <li class="nav-item me-2 mx-4 ps-0 fs-5"><a class="nav-link fs-5" href="#aboutus">About us</a></li>
-                <li class="nav-item me-4 mx-3 ps-0 fs-5"><a class="nav-link fs-5" href="#product">Produk</a></li>
-            </ul>
-        </div>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto"> <!-- ms-auto untuk mendorong ke kanan -->
                 <li class="nav-item"><a class="nav-link fs-5" href="{{('/')}}">Go to Landingpage</a></li>
                 @guest
                     <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('auth.register') }}">Daftar</a></li>
                 @else
-                <li class="nav-item dropdown mt-1 hover-dropdown">
-                        <b><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Welcome {{ Auth::user()->name }}
+                    <li class="nav-item dropdown mt-1">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <b>Welcome {{ Auth::user()->name }}</b>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('account.profile') }}">Pengaturan Akun</a></li>
@@ -243,6 +219,33 @@ toggler.addEventListener('click', function () {
             title: 'Oops...',
             text: '{{ $errors->first() }}',
         });
+        document.addEventListener("DOMContentLoaded", function() {
+  // Pilih semua elemen dropdown di navbar
+  const dropdowns = document.querySelectorAll('.nav-item.dropdown');
+
+  dropdowns.forEach(function(dropdown) {
+    // Saat kursor masuk, tambahkan kelas 'show' untuk menampilkan dropdown
+    dropdown.addEventListener("mouseenter", function() {
+      const dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu) {
+        dropdownMenu.classList.add('show');
+        // Update aria-expanded agar sesuai dengan status tampilan
+        const toggle = this.querySelector('.dropdown-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Saat kursor keluar, hapus kelas 'show' agar dropdown menghilang
+    dropdown.addEventListener("mouseleave", function() {
+      const dropdownMenu = this.querySelector('.dropdown-menu');
+      if (dropdownMenu) {
+        dropdownMenu.classList.remove('show');
+        const toggle = this.querySelector('.dropdown-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+});
     </script>
     @endif
 </body>

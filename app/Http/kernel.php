@@ -86,4 +86,5 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\CheckAdmin::class,  // Tambahkan middleware admin jika ingin di prioritaskan
     ];
     
+    
 }

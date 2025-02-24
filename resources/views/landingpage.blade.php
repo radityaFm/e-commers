@@ -536,7 +536,7 @@ footer {
     <!-- Bagian Bawah Footer -->
     <div class="row text-center mt-5">
       <div class="col-md-12 box">
-        <span class="copyright quick-links">Copyright &copy; Your Website <script>document.write(new Date().getFullYear())</script></span>
+        <span class="copyright quick-links">Copyright &copy; E-commerce Mbak G <script>document.write(new Date().getFullYear())</script></span>
       </div>
     </div>
   </div>

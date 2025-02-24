@@ -12,30 +12,37 @@ use Illuminate\Support\Facades\Log;
 
 class Product extends Model
 {
-    use hasFactory, softDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name','image' ,'thumbnail', 'slug', 'about','price', 'stock', 
-        'category', 'price','user_id', 'is_popular', 'brands_id'
+        'name', 'image', 'thumbnail', 'slug', 'about', 'price', 'stock',
+        'category', 'price', 'user_id', 'is_popular', 'brand_name', 'brand_logo', 'sizes'
     ];
-    public function cartItems()
+
+    protected $casts = [
+        'sizes' => 'array', // Cast kolom sizes ke tipe array
+    ];
+
+    public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
     }
+
     public function carts()
     {
         return $this->belongsToMany(Cart::class, 'cart_items')->withPivot('quantity');
     }
+
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_items')->withPivot('quantity', 'price', 'total_price');
     }
 
-
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function decreaseStock($quantity)
     {
         $this->stock -= $quantity;
@@ -46,22 +53,19 @@ class Product extends Model
     protected static function boot()
     {
         parent::boot();
-        
-        static::creating(function ($brand) {
-            $brand->slug = Str::slug($brand->name);
+
+        static::creating(function ($product) {
+            $product->slug = Str::slug($product->name);
         });
 
         static::updating(function ($product) {
-            // Log::info("Update produk: " . $product->name);
+            if ($product->isDirty('name')) {
+                $product->slug = Str::slug($product->name);
+            }
         });
     }
-    public function checkout($id)
-{
-    $product = Product::findOrFail($id);
-    return view('checkout', compact('product'));
-}
 
-    //bahwa slug adalah route key name
+    // Bahwa slug adalah route key name
     public function getRouteKeyName()
     {
         return 'slug';
@@ -70,12 +74,7 @@ class Product extends Model
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = $value;
-        $this->attributes['slug'] = \Str::slug($value);
-    }
-    
-    public function brand(): BelongsTo
-    {
-        return $this->belongsTo(Brand::class, 'brands_id');
+        $this->attributes['slug'] = Str::slug($value);
     }
 
     public function transactions(): HasMany
@@ -86,10 +85,5 @@ class Product extends Model
     public function photos(): HasMany
     {
         return $this->hasMany(ProductPhoto::class);
-    }
-
-    public function sizes(): HasMany
-    {
-        return $this->hasMany(Size::class);
     }
 }

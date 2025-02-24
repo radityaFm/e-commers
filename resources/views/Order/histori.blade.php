@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container mt-5 pt-4">
     <h1 class="my-4">Riwayat Pesanan</h1>
 
     @if($orders->isEmpty())
-        <div class="alert alert-info">Anda belum memiliki pesanan.</div>
+        <div class="alert alert-info my-4 mt-5">Anda belum memiliki pesanan.</div>
     @else
         @foreach($orders as $order)
             <div class="card mb-4">
                 <div class="card-header">
-                    <h3>Pesanan #{{ $order->id }}</h3>
+                    <h3>Pesanan ku</h3>
                     <p class="mb-0"><strong>Status:</strong> 
                         <span class="badge 
                             @if($order->status == 'completed') bg-success 
@@ -30,8 +30,11 @@
                     <ul class="list-group">
                         @foreach($order->items as $item)
                             <li class="list-group-item d-flex justify-content-between">
-                                <span>{{ $item->product->name }} ({{ $item->quantity }}x)</span>
-                                <span>Rp{{ number_format($item->quantity * $item->price, 0, ',', '.') }}</span>
+                                <div>
+                                    <strong>{{ $item->product->name }}</strong> ({{ $item->quantity }}x) <br>
+                                    <small class="text-muted">Harga awal: Rp{{ number_format($item->price, 0, ',', '.') }}</small>
+                                </div>
+                                <span class="fw-bold">Rp{{ number_format($item->quantity * $item->price, 0, ',', '.') }}</span>
                             </li>
                         @endforeach
                     </ul>
@@ -44,7 +47,7 @@
                 <div class="card-footer d-flex justify-content-start">
                     <a href="{{ route('/') }}" class="btn btn-primary me-2">Kembali ke Home</a>
                     <button class="btn btn-success whatsappOrder" data-order-id="{{ $order->id }}">
-                        Pesan Langsung Lewat WhatsApp
+                        Lanjut via WhatsAPP
                     </button>
                 </div>
             </div>
@@ -63,49 +66,37 @@ document.addEventListener("DOMContentLoaded", function() {
             let phoneNumber = "6287831002289"; // Nomor WhatsApp
             let message = `Permisi, saya sudah memesan dan saya ingin membeli\n\n`;
             message += `==============================\n`;
-            message += `  STRUK PESANAN #${orderId}\n`;
+            message += `  STRUK PESANANKU\n`;
             message += `==============================\n\n`;
 
             let orderCard = this.closest('.card');
+            if (!orderCard) return;
+
             let totalPriceSum = 0; // Untuk menyimpan total harga
 
             // Loop melalui setiap item produk
             orderCard.querySelectorAll('.list-group-item').forEach(function(item) {
-                // Ambil nama produk
-                let productElement = item.querySelector('.col-md-6 strong');
-                let product = productElement ? productElement.innerText.trim() : 'Produk tidak ditemukan';
+                let productText = item.querySelector('strong')?.textContent.trim() || "Produk Tidak Diketahui";
+                let quantityText = item.querySelector('div')?.textContent.match(/\d+x/) || ["1x"];
+                let quantity = parseInt(quantityText[0].replace('x', ''), 10) || 1;
 
-                // Ambil semua elemen dengan class .col-md-3.text-end
-                let values = item.querySelectorAll('.col-md-2.text-end');
+                let totalText = item.querySelector('span.fw-bold')?.textContent.replace(/\D/g, '') || "0";
+                let totalPrice = parseInt(totalText, 10) || 0;
+                let price = Math.floor(totalPrice / quantity); // Hitung harga awal per item
 
-                // Pastikan ada setidaknya tiga elemen (quantity, price, total_price)
-                if (values.length >= 3) {
-                    let quantity = values[0].innerText.trim().replace(/\D/g, ''); // Hanya angka
-                    let price = values[1].innerText.trim().replace(/Rp\s?|[^0-9]/g, ''); // Hapus "Rp" dan non-angka
-                    let totalPrice = values[2].innerText.trim().replace(/Rp\s?|[^0-9]/g, ''); // Hapus "Rp" dan non-angka
+                // Tambahkan detail produk ke pesan
+                message += `Produk: ${productText}\n`;
+                message += `Harga Awal: Rp ${price.toLocaleString('id-ID')}\n`;
+                message += `Jumlah: ${quantity}\n`;
+                message += `Subtotal: Rp ${totalPrice.toLocaleString('id-ID')}\n`;
+                message += `-----------------------------\n`;
 
-                    // Pastikan price, quantity, dan totalPrice adalah angka
-                    price = price ? parseInt(price, 10) : 0;
-                    quantity = quantity ? parseInt(quantity, 10) : 0;
-                    totalPrice = totalPrice ? parseInt(totalPrice, 10) : 0;
-
-                    // Tambahkan detail produk ke pesan
-                    message += `Produk: ${product}\n`;
-                    message += `Harga: Rp ${price.toLocaleString('id-ID')}\n`;
-                    message += `Jumlah: ${quantity}\n`;
-                    message += `Subtotal: Rp ${totalPrice.toLocaleString('id-ID')}\n`;
-                    message += `-----------------------------\n`;
-                }
+                totalPriceSum += totalPrice;
             });
 
-            // Ambil elemen total harga di dalam card
+            // Ambil total harga dari elemen HTML
             let totalPriceElement = orderCard.querySelector('.text-end h5');
-
-            // Ambil teks total harga dan bersihkan angka
-            let totalPriceText = totalPriceElement ? totalPriceElement.innerText.trim().replace(/\D/g, '') : '0';
-
-            // Konversi ke angka jika valid
-            let totalPrice = totalPriceText ? parseInt(totalPriceText, 10) : totalPriceSum;
+            let totalPrice = totalPriceElement ? parseInt(totalPriceElement.textContent.replace(/\D/g, ''), 10) : totalPriceSum;
 
             // Tambahkan total harga ke pesan
             message += `TOTAL: Rp ${totalPrice.toLocaleString('id-ID')}\n`;
@@ -121,5 +112,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
 </script>
 @endpush

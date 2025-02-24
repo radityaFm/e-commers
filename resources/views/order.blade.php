@@ -2,20 +2,18 @@
 
 @section('content')
 <div class="container">
-    <h1 class="my-4">Daftar Semua Pesanan</h1>
+    <h1 class="my-4 mt-5 py-4">Daftar Semua Pesanan</h1>
 
     <!-- Filter berdasarkan hari -->
     <form method="GET" action="{{ route('order') }}" class="mb-4">
         <label for="dayFilter" class="form-label">Filter berdasarkan hari:</label>
         <select name="day" id="dayFilter" class="form-select" onchange="this.form.submit()">
             <option value=""> Semua Hari </option>
-            <option value="senin" {{ request('day') == 'senin' ? 'selected' : '' }}>Senin</option>
-            <option value="selasa" {{ request('day') == 'selasa' ? 'selected' : '' }}>Selasa</option>
-            <option value="rabu" {{ request('day') == 'rabu' ? 'selected' : '' }}>Rabu</option>
-            <option value="kamis" {{ request('day') == 'kamis' ? 'selected' : '' }}>Kamis</option>
-            <option value="jumat" {{ request('day') == 'jumat' ? 'selected' : '' }}>Jumat</option>
-            <option value="sabtu" {{ request('day') == 'sabtu' ? 'selected' : '' }}>Sabtu</option>
-            <option value="minggu" {{ request('day') == 'minggu' ? 'selected' : '' }}>Minggu</option>
+            @foreach(['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'] as $day)
+                <option value="{{ $day }}" {{ request('day') == $day ? 'selected' : '' }}>
+                    {{ ucfirst($day) }}
+                </option>
+            @endforeach
         </select>
     </form>
 
@@ -48,8 +46,7 @@
                                     {{ ucfirst($order->status) }}
                                 </span>
                             </td>
-                            <td>Rp{{ number_format($order->items->sum(fn($item) => $item->quantity * $item->price), 0, ',', '.') }}
-                            </td>
+                            <td>Rp{{ number_format($order->items->sum(fn($item) => $item->quantity * $item->price), 0, ',', '.') }}</td>
                             <td>{{ $order->created_at->format('d M Y H:i') }}</td>
                             <td>
                                 <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetail{{ $order->id }}">
@@ -82,10 +79,22 @@
                                         </ul>
 
                                         <div class="mt-3 text-end">
-                                            <h5>Rp {{ number_format($item->quantity * $item->price, 0, ',', '.') }}</h5>
+                                            <h5>Total: Rp {{ number_format($order->items->sum(fn($item) => $item->quantity * $item->price), 0, ',', '.') }}</h5>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
+                                        <!-- Confirm Status -->
+                                        <form action="{{ route('order.confirm', $order->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">Confirm</button>
+                                        </form>
+                                        <!-- Delete Order -->
+                                        <form action="{{ route('order.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pesanan ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                     </div>
                                 </div>

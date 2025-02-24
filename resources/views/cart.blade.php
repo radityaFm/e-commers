@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container mt-5 pt-4" style="margin-top:80%;">
+    <h1 class="my-4 text-center keranjang-container">Keranjang Belanja</h1>
+
     @if(empty($cartItems))
-        <div class="text-center my-5 mt-5">
+        <div class="text-center my-5">
             <h3>Keranjang Anda kosong.</h3>
             <a href="{{ route('user.product') }}" class="btn btn-primary mt-3">Mulai Belanja</a>
         </div>
@@ -18,7 +20,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <!-- Form untuk Checkout -->
                 <form id="checkoutForm" action="{{ route('checkout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
@@ -73,20 +74,20 @@
                     </button>
                 </div>
 
-                <!-- Tombol Pesan Lewat WhatsApp -->
-                <div class="d-flex justify-content-center mt-5">
-                    <a href="{{ route('order.histori') }}">
-                    <button class="btn btn-primary ms-4">
-                        Lihat history pemesanan
-                    </button>
-                    <a>
+                <div class="d-flex justify-content-center mt-4 gap-3">
+                    <a href="{{ route('order.histori') }}" class="btn btn-primary">
+                        Lihat History Pemesanan
+                    </a>
                 </div>
             </div>
         </div>
     @endif
-    <div class="container py-4 mx-auto fs-4" style="color:red;">* Ketika sudah checkout pesanan, maka diharap memberi pesan melalui WhatsAPP untuk pembayaran</div>
+    <div class="container py-4 mx-auto fs-4 text-danger text-center">
+        * Ketika sudah checkout pesanan, harap menghubungi melalui WhatsApp untuk pembayaran
+    </div>
 </div>
 @endsection
+
 
 @section('scripts')
 <script>
@@ -201,6 +202,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const cartCard = document.querySelector(".card");
+    if (cartCard) {
+        cartCard.classList.add("show-animation");
+    }
 });
 </script>
 @endsection

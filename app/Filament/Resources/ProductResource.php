@@ -3,16 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
-use App\Models\Brand;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
@@ -21,7 +17,6 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Filters\SelectFilter;
 
 class ProductResource extends Resource
@@ -32,7 +27,7 @@ class ProductResource extends Resource
     {
         return 'slug'; // menggunakan slug pengganti id
     }
-    
+
     protected static ?string $navigationLabel = 'Product';
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
@@ -51,33 +46,33 @@ class ProductResource extends Resource
                             ->label('Name')
                             ->required()
                             ->placeholder('Enter the product name'),
-                        Fileupload::make('thumbnail')
+                        FileUpload::make('thumbnail')
                             ->label('Product Image')
-                                ->image()
-                                ->disk('public')
-                                ->directory('product')
-                                ->required(),
-                        Repeater::make('product_photo')
-                                ->relationship('photos')
-                                ->schema([
-                                    FileUpload::make('photo')
-                                        ->image()
-                                        ->disk('public')
-                                        ->directory('product')
-                                        ->required(),
-                                ]),
-                        Repeater::make('sizes')
-                                ->relationship('sizes')
-                                ->schema([
-                                    TextInput::make('size')
-                                        ->nullable(),
-                                ]),
-                        TextInput::make('price')
-                            ->label('Price')
+                            ->image()
+                            ->disk('public')
+                            ->directory('product')
+                            ->required(),
+                        Repeater::make('photos')
+                            ->relationship('photos')
+                            ->schema([
+                                FileUpload::make('photo')
+                                    ->image()
+                                    ->disk('public')
+                                    ->directory('product')
+                                    ->required(),
+                            ]),
+                            Select::make('price')
+                            ->label('price')
                             ->required()
-                            ->numeric()
-                            ->prefix('IDR')
-                            ->placeholder('Enter the product price'),
+                            ->options([
+                                '3000' => '3000',
+                                '5000' => '5000',
+                                '6000' => '6000',
+                                '8500' => '8500',
+                                '10000' => '10000',
+                            ])
+                            ->position('bottom'), // Dropdown selalu buka ke bawah
+                    ]),
                         TextInput::make('stock')
                             ->label('Stock')
                             ->prefix('Qty')
@@ -86,7 +81,22 @@ class ProductResource extends Resource
                         TextInput::make('slug')
                             ->hiddenOn(['create', 'edit'])
                             ->dehydrated(false),
-                    ]),
+                            Repeater::make('sizes')
+                ->schema([
+                    Select::make('size')
+                        ->label('Size')
+                        ->required()
+                        ->options([
+                            '4cm' => '4cm',
+                            '6cm' => '6cm',
+                            '8cm' => '8cm',
+                            '10cm' => '10cm',
+                            '12cm' => '12cm',
+                            '14cm' => '14cm',
+                            '16cm' => '16cm',
+                        ])
+                        ->position('bottom'), // Dropdown selalu buka ke bawah
+                ]),
                 Fieldset::make('Additional')
                     ->schema([
                         Textarea::make('about')
@@ -97,26 +107,29 @@ class ProductResource extends Resource
                             ->label('Category')
                             ->required()
                             ->options([
-                                1 => 'Yogurt',
-                                2 => 'susu jeli',
+                                'Yogurt' => 'Yogurt',
+                                'Susu Jeli' => 'Susu Jeli',
                             ]),
-                        select::make('is_popular')
+                        Select::make('is_popular')
                             ->label('Rating')
                             ->required()
                             ->options([
                                 true => 'Popular',
                                 false => 'Not Popular',
                             ]),
-                        select::make('brands_id')
-                            ->label('Brand')
-                            ->relationship('brand', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->nullable()
-                    ]),
+                        TextInput::make('brand_name')
+                            ->label('Brand Name')
+                            ->nullable(),
+                        FileUpload::make('brand_logo')
+                            ->label('Brand Logo')
+                            ->image()
+                            ->disk('public')
+                            ->directory('brands')
+                            ->nullable(),
+                            
+                        ]),
             ]);
     }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -124,7 +137,8 @@ class ProductResource extends Resource
                 TextColumn::make('name')
                     ->label('Product Name')
                     ->searchable(),
-                TextColumn::make('brand.name')
+                TextColumn::make('brand_name')
+                    ->label('Brand Name')
                     ->searchable(),
                 ImageColumn::make('thumbnail')
                     ->label('Image')
@@ -135,7 +149,7 @@ class ProductResource extends Resource
                     ->label('Price')
                     ->formatStateUsing(function ($state) {
                         return 'IDR ' . number_format($state, 0, ',', '.');
-                }),
+                    }),
                 TextColumn::make('stock')
                     ->label('Stock'),
             ])
@@ -143,12 +157,9 @@ class ProductResource extends Resource
                 SelectFilter::make('category')
                     ->label('Category')
                     ->options([
-                        1 => 'Susu jeli',
-                        2 => 'Yogurt',
+                        'Yogurt' => 'Yogurt',
+                        'Susu Jeli' => 'Susu Jeli',
                     ]),
-                SelectFilter::make('brands_id')
-                    ->label('Brand')
-                    ->relationship('brand', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -176,4 +187,3 @@ class ProductResource extends Resource
         ];
     }
 }
-    

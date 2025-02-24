@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Cart;
@@ -11,25 +12,28 @@ use Illuminate\Support\Facades\Auth;
     class OrderController extends Controller
 {
     public function index(Request $request)
-    {
-        $dayFilter = $request->input('day'); // Ambil filter hari dari request
-        $ordersQuery = Order::with(['user', 'items.product'])->orderBy('created_at', 'desc');
+{
+    // Hapus pesanan yang lebih dari satu minggu
+    Order::where('created_at', '<', Carbon::now()->subWeek())->delete();
 
-        if ($dayFilter) {
-            // Konversi nama hari menjadi angka (Senin = 1, Minggu = 7)
-            $dayNumber = [
-                'senin' => 1, 'selasa' => 2, 'rabu' => 3, 'kamis' => 4,
-                'jumat' => 5, 'sabtu' => 6, 'minggu' => 7
-            ][$dayFilter];
+    $dayFilter = $request->input('day'); // Ambil filter hari dari request
+    $ordersQuery = Order::with(['user', 'items.product'])->orderBy('created_at', 'desc');
 
-            // Filter pesanan berdasarkan hari
-            $ordersQuery->whereRaw('DAYOFWEEK(created_at) = ?', [$dayNumber + 1]); // +1 karena di MySQL, Minggu = 1
-        }
+    if ($dayFilter) {
+        // Konversi nama hari menjadi angka (Senin = 1, Minggu = 7)
+        $dayNumber = [
+            'senin' => 1, 'selasa' => 2, 'rabu' => 3, 'kamis' => 4,
+            'jumat' => 5, 'sabtu' => 6, 'minggu' => 7
+        ][$dayFilter];
 
-        $orders = $ordersQuery->get();
-
-        return view('order', compact('orders', 'dayFilter'));
+        // Filter pesanan berdasarkan hari
+        $ordersQuery->whereRaw('DAYOFWEEK(created_at) = ?', [$dayNumber + 1]); // +1 karena di MySQL, Minggu = 1
     }
+
+    $orders = $ordersQuery->get();
+
+    return view('order', compact('orders', 'dayFilter'));
+}
 
 
     public function histori()
@@ -84,5 +88,24 @@ use Illuminate\Support\Facades\Auth;
         $order->update(['status' => 'checkout']);
 
         return redirect()->route('order.histori')->with('success', 'Checkout berhasil!');
+    }
+    public function confirm($id)
+    {
+        \Log::info(request()->method()); // Log metode request yang diterima Laravel
+        \Log::info(request()->all()); // Log semua data yang dikirim
+    
+        $order = Order::findOrFail($id);
+        $order->status = 'completed';
+        $order->save();
+    
+        return redirect()->route('order')->with('success', 'Pesanan berhasil diselesaikan.');
+    }
+    
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+    
+        return redirect()->route('order')->with('success', 'Pesanan berhasil dihapus.');
     }
 }

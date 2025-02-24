@@ -22,12 +22,13 @@ return new class extends Migration
             $table->string('category');
             $table->unsignedBigInteger('price');
             $table->boolean('is_popular');
-            $table->foreignId('brands_id')->nullable()->constrained()->cascadeOnDelate();
-            $table->softDeletes(); 
+            $table->string('brand_name')->nullable(); // Kolom untuk nama brand
+            $table->string('brand_logo')->nullable(); // Kolom untuk logo brand
+            $table->json('sizes')->nullable(); // Kolom untuk menyimpan ukuran (JSON)
+            $table->softDeletes();
             $table->timestamps();
         });
     }
-    
 
     /**
      * Reverse the migrations.
