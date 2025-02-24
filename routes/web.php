@@ -50,15 +50,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('order/histori', [OrderController::class, 'histori'])->name('order.histori');
 Route::post('order/histori', [OrderController::class, 'checkout'])->name('order.histori');
-Route::middleware(['auth'])->group(function () {
-    Route::get('order', [OrderController::class, 'index'])->name('order');
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/order', [OrderController::class, 'index'])->name('order');
-    Route::post('/order/confirm/{id}', [OrderController::class, 'confirm'])->name('order.confirm');
-    Route::delete('/order/destroy/{id}', [OrderController::class, 'destroy'])->name('order.destroy');
-});
 
 Route::post('/send-otp', [OtpController::class, 'sendOtp']);
 Route::post('/verify-otp', [OtpController::class, 'verifyOtp']);
